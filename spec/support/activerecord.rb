@@ -15,3 +15,15 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
 end
+
+class ApplicationRecord < ActiveRecord::Base
+  include ActiverecordEncryption::Core
+end
+
+class Post < ApplicationRecord
+  has_many :comments
+end
+
+class Comment < ApplicationRecord
+  belongs_to :post
+end

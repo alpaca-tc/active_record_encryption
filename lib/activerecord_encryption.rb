@@ -5,4 +5,5 @@ require 'activerecord_encryption/version'
 
 module ActiverecordEncryption
   autoload :Type, 'activerecord_encryption/type'
+  autoload :Core, 'activerecord_encryption/core'
 end
