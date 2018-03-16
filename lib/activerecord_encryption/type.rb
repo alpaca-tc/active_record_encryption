@@ -17,21 +17,35 @@ module ActiverecordEncryption
     end
 
     def deserialize(value)
-      decrypt(value) if value
+      return if value.nil?
+
+      decrypted = decrypt(value)
+      @subtype.deserialize(decrypted)
     end
 
     def serialize(value)
-      encrypt(value) if value
+      return if value.nil?
+
+      serialized = type_cast_for_database(@subtype.serialize(value))
+      type_cast_for_database(encrypt(serialized)) if serialized
     end
 
     private
 
+    def type_cast_for_database(value)
+      ActiveRecord::Base.connection.type_cast(value)
+    end
+
     def decrypt(value)
-      value
+      cipher.decrypt(value)
     end
 
     def encrypt(value)
-      value
+      cipher.encrypt(value)
+    end
+
+    def cipher
+      ActiverecordEncryption.cipher || raise(ActiverecordEncryption::MissingCipherError, 'missing cipher')
     end
   end
 end

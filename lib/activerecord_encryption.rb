@@ -2,8 +2,15 @@
 
 require 'active_record'
 require 'activerecord_encryption/version'
+require 'active_support/core_ext/module/attribute_accessors_per_thread'
 
 module ActiverecordEncryption
-  autoload :Type, 'activerecord_encryption/type'
-  autoload :Core, 'activerecord_encryption/core'
+  require 'activerecord_encryption/type'
+  require 'activerecord_encryption/cipher'
+  require 'activerecord_encryption/cipher/aes256cbc'
+  require 'activerecord_encryption/encrypted_attributes'
+  require 'activerecord_encryption/core'
+  require 'activerecord_encryption/exceptions'
+
+  thread_mattr_accessor(:cipher)
 end
