@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe ActiverecordEncryption::Type do
   describe '#cast' do
     subject { instance.cast(value) }
@@ -18,5 +20,22 @@ RSpec.describe ActiverecordEncryption::Type do
         it { is_expected.to eq(1) }
       end
     end
+
+    context 'when subtype is datetime' do
+      let(:subtype) { :datetime }
+
+      context 'given "2018-01-01"' do
+        let(:value) { '2018-01-01' }
+        it { is_expected.to eq(Time.utc(2018, 1, 1).utc) }
+      end
+
+      context 'given ""' do
+        let(:value) { '' }
+        it { is_expected.to be_nil }
+      end
+    end
+  end
+
+  describe '#deserialize' do
   end
 end

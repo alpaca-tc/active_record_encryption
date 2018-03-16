@@ -26,10 +26,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord', '>= 5.0'
 
   spec.add_development_dependency 'bundler', '~> 1.16'
-  spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'guard-rspec', '~> 4.7.3'
   spec.add_development_dependency 'guard-rubocop'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop', '~> 0.53.0'
+  spec.add_development_dependency 'sqlite3'
 end
