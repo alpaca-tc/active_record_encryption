@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe Activerecord::Encryption do
+RSpec.describe ActiverecordEncryption do
   it 'has a version number' do
-    expect(Activerecord::Encryption::VERSION).not_to be nil
+    expect(ActiverecordEncryption::VERSION).not_to be nil
   end
 
   it 'does something useful' do
