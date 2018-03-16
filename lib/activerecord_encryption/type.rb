@@ -4,15 +4,16 @@ module ActiverecordEncryption
   class Type < ActiveRecord::Type::Value
     delegate :type, to: :subtype
 
-    attr_reader :name, :subtype
+    attr_reader :name, :subtype, :db_type
 
-    def initialize(name, subtype)
+    def initialize(name, subtype, db_type)
       @name = name
       @subtype = subtype
+      @db_type = db_type
     end
 
     def cast(value)
-      @subtype.cast(value)
+      subtype.cast(value)
     end
 
     def deserialize(value)
