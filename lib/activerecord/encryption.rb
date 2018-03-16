@@ -1,4 +1,6 @@
-require "activerecord/encryption/version"
+# frozen_string_literal: true
+
+require 'activerecord/encryption/version'
 
 module Activerecord
   module Encryption
