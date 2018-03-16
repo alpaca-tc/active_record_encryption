@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+require 'active_record'
 require 'activerecord_encryption/version'
 
 module ActiverecordEncryption
-  # Your code goes here...
+  autoload :Type, 'activerecord_encryption/type'
 end
