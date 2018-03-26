@@ -17,8 +17,7 @@ RSpec.describe ActiverecordEncryption::Core do
           time: :time,
           integer: :integer,
           float: :float,
-          decimal: :decimal,
-          boolean: :boolean
+          decimal: :decimal
         )
       end
 
@@ -30,7 +29,6 @@ RSpec.describe ActiverecordEncryption::Core do
         t.binary :integer
         t.binary :float
         t.binary :decimal
-        t.binary :boolean
       end
     end
 
@@ -48,7 +46,25 @@ RSpec.describe ActiverecordEncryption::Core do
           expect(find_instance.public_send(column)).to eq(expected)
         end
 
-        unless value.nil?
+        it 'finds by encrypted value' do
+          $DEBUG = true
+          relation = Post.where(column => value)
+          expect(relation).to eq([instance])
+        end
+
+        if value.nil?
+          it 'encrypts value in predicate query' do
+            relation = Post.where(column => value)
+            expect(relation.to_sql).to include('IS NULL')
+          end
+        else
+          it 'encrypts value in predicate query' do
+            relation = Post.where(column => value)
+            ruby_value = Post.new(column => value).public_send(column)
+            db_value = Post.connection.send(:type_cast, ruby_value)
+            expect(relation.to_sql).to_not include(%("#{db_value}"))
+          end
+
           it 'encrypts value in database' do
             in_database = find_instance.public_send("#{column}_before_type_cast")
 
@@ -100,18 +116,6 @@ RSpec.describe ActiverecordEncryption::Core do
       it_behaves_like 'a encrypted column', column: :float, value: -1, expected: -1.0
       it_behaves_like 'a encrypted column', column: :float, value: '1.33', expected: 1.33
       it_behaves_like 'a encrypted column', column: :float, value: nil, expected: nil
-    end
-
-    describe 'boolean' do
-      it_behaves_like 'a encrypted column', column: :boolean, value: 0.33, expected: true
-      it_behaves_like 'a encrypted column', column: :boolean, value: 1, expected: true
-      it_behaves_like 'a encrypted column', column: :boolean, value: '-1', expected: true
-      it_behaves_like 'a encrypted column', column: :boolean, value: 't', expected: true
-      it_behaves_like 'a encrypted column', column: :boolean, value: true, expected: true
-      it_behaves_like 'a encrypted column', column: :boolean, value: false, expected: false
-      it_behaves_like 'a encrypted column', column: :boolean, value: '0', expected: false
-      it_behaves_like 'a encrypted column', column: :boolean, value: 0, expected: false
-      it_behaves_like 'a encrypted column', column: :boolean, value: nil, expected: nil
     end
   end
 end

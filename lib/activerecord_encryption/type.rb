@@ -2,6 +2,8 @@
 
 module ActiverecordEncryption
   class Type < ActiveRecord::Type::Value
+    using(ActiverecordEncryption::SerializerWithCast)
+
     delegate :type, to: :subtype
 
     attr_reader :name, :subtype, :db_type
