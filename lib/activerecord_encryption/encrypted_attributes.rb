@@ -7,14 +7,18 @@ module ActiverecordEncryption
     module ClassMethods
       def encrypted_attributes(definitions)
         definitions.each do |name, type|
-          name = name.to_s
-          type = ActiveRecord::Type.lookup(type) if type.is_a?(Symbol)
+          define_encrypted_attribute(name, type)
+        end
+      end
 
-          decorate_attribute_type(name, :encrypted) do |db_type|
-            ActiverecordEncryption::Type.new(name, type, db_type)
-          end
+      private
 
-          singleton_class.define_method(name.pluralize) { mapping }
+      def define_encrypted_attribute(name, type)
+        name = name.to_s
+        type = ActiveRecord::Type.lookup(type) if type.is_a?(Symbol)
+
+        decorate_attribute_type(name, :encrypted) do |db_type|
+          ActiverecordEncryption::Type.new(name, type, db_type)
         end
       end
     end

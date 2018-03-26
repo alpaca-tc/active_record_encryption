@@ -16,28 +16,15 @@ ActiveRecord::Schema.define do
   end
 end
 
-class ApplicationRecord < ActiveRecord::Base
-  self.abstract_class = true
+Module.new do
+  def create_table(table_name, &block)
+    around do |example|
+      ActiveRecord::Base.connection.create_table(table_name, force: true, &block)
+      example.run
+    ensure
+      ActiveRecord::Base.connection.drop_table(table_name)
+    end
+  end
 
-  include ActiverecordEncryption::Core
-end
-
-class Post < ApplicationRecord
-  has_many :comments
-
-  encrypted_attributes(
-    string: :string,
-    text: :text,
-    date: :date,
-    datetime: :datetime,
-    time: :time,
-    integer: :integer,
-    float: :float,
-    decimal: :decimal,
-    boolean: :boolean
-  )
-end
-
-class Comment < ApplicationRecord
-  belongs_to :post
+  RSpec.configuration.extend(self)
 end

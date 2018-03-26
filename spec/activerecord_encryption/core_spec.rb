@@ -3,24 +3,47 @@
 RSpec.describe ActiverecordEncryption::Core do
   describe '.encrypted_attributes' do
     before do
-      ActiverecordEncryption.cipher = create_random_cipher
+      ActiverecordEncryption.cipher = build_cipher
     end
 
-    def create_random_cipher
-      ActiverecordEncryption::Cipher::Aes256cbc.new(
-        password: 'password',
-        salt: OpenSSL::Random.random_bytes(8)
-      )
+    let(:post_class) do
+      create_temporary_model('Post') do
+        include(ActiverecordEncryption::Core)
+
+        encrypted_attributes(
+          string: :string,
+          text: :text,
+          date: :date,
+          datetime: :datetime,
+          time: :time,
+          integer: :integer,
+          float: :float,
+          decimal: :decimal,
+          boolean: :boolean
+        )
+      end
+    end
+
+    create_table(:posts) do |t|
+      t.string :string
+      t.text   :text
+      t.string :date
+      t.string :datetime
+      t.string :time
+      t.string :integer
+      t.string :float
+      t.string :decimal
+      t.string :boolean
     end
 
     shared_examples_for 'a encrypted column' do |column:, value:, expected:|
       context "given #{value.inspect} to #{column}" do
         let!(:instance) do
-          Post.create!(column => value)
+          post_class.create!(column => value)
         end
 
         def find_instance
-          Post.find(instance.id)
+          post_class.find(instance.id)
         end
 
         it 'decrypts value from database' do
@@ -37,7 +60,7 @@ RSpec.describe ActiverecordEncryption::Core do
           end
 
           it 'encrypts with specific cipher' do
-            ActiverecordEncryption.cipher = create_random_cipher
+            ActiverecordEncryption.cipher = build_cipher
             expect { find_instance.inspect }.to raise_error(OpenSSL::Cipher::CipherError)
           end
         end
