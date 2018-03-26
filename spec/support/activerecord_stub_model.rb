@@ -16,8 +16,8 @@ module ActiverecordStubModel
   end
 
   class_methods do
-    def stub_model(model_name, &block)
-      model = StubModel.new(model_name, &block)
+    def stub_model(model_name, *options, &block)
+      model = StubModel.new(model_name, *options, &block)
 
       around do |example|
         stubbed_models.push(model)

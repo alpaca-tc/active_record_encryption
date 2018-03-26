@@ -9,9 +9,7 @@ module ActiverecordEncryption
   require 'activerecord_encryption/type'
   require 'activerecord_encryption/cipher'
   require 'activerecord_encryption/cipher/aes256cbc'
-  require 'activerecord_encryption/encrypted_attributes'
-  require 'activerecord_encryption/encrypted_attributes/from_comment'
-  require 'activerecord_encryption/core'
+  require 'activerecord_encryption/encrypted_attribute'
   require 'activerecord_encryption/exceptions'
 
   thread_mattr_accessor(:cipher)

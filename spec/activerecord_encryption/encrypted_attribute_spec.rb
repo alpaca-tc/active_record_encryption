@@ -1,25 +1,23 @@
 # frozen_string_literal: true
 
-RSpec.describe ActiverecordEncryption::Core do
-  describe '.encrypted_attributes' do
+RSpec.describe ActiverecordEncryption::EncryptedAttribute do
+  describe 'ClassMethod' do
     before do
       ActiverecordEncryption.cipher = build_cipher
     end
 
     stub_model('Post') do
       model do
-        include(ActiverecordEncryption::Core)
+        include(ActiverecordEncryption::EncryptedAttribute)
 
-        encrypted_attributes(
-          string: :string,
-          date: :date,
-          datetime: :datetime,
-          time: :time,
-          integer: :integer,
-          float: :float,
-          decimal: :decimal,
-          boolean: :boolean
-        )
+        encrypted_attribute(:string, :string)
+        encrypted_attribute(:date, :date)
+        encrypted_attribute(:datetime, :datetime)
+        encrypted_attribute(:time, :time)
+        encrypted_attribute(:integer, :integer)
+        encrypted_attribute(:float, :float)
+        encrypted_attribute(:decimal, :decimal)
+        encrypted_attribute(:boolean, :boolean)
       end
 
       table do |t|
