@@ -3,9 +3,13 @@
 RSpec.describe ActiverecordEncryption::EncryptedAttributes do
   describe 'ClassMethods' do
     describe '.encrypted_attributes' do
-      let(:klass) do
-        create_temporary_model('User') do
+      stub_model('User') do
+        model do
           include(ActiverecordEncryption::EncryptedAttributes)
+        end
+
+        table do |t|
+          t.binary(:name)
         end
       end
 
@@ -13,14 +17,10 @@ RSpec.describe ActiverecordEncryption::EncryptedAttributes do
         ActiverecordEncryption.cipher = build_cipher
       end
 
-      create_table(:users) do |t|
-        t.binary(:name)
-      end
-
       it 'defines decorated attributes' do
-        klass.encrypted_attributes(name: :string)
+        User.encrypted_attributes(name: :string)
 
-        instance = klass.new
+        instance = User.new
         expect(instance.name).to be_nil
 
         instance.name = 'string'

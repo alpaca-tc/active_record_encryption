@@ -6,8 +6,8 @@ RSpec.describe ActiverecordEncryption::Core do
       ActiverecordEncryption.cipher = build_cipher
     end
 
-    let(:post_class) do
-      create_temporary_model('Post') do
+    stub_model('Post') do
+      model do
         include(ActiverecordEncryption::Core)
 
         encrypted_attributes(
@@ -22,28 +22,28 @@ RSpec.describe ActiverecordEncryption::Core do
           boolean: :boolean
         )
       end
-    end
 
-    create_table(:posts) do |t|
-      t.string :string
-      t.text   :text
-      t.string :date
-      t.string :datetime
-      t.string :time
-      t.string :integer
-      t.string :float
-      t.string :decimal
-      t.string :boolean
+      table do |t|
+        t.string :string
+        t.text   :text
+        t.string :date
+        t.string :datetime
+        t.string :time
+        t.string :integer
+        t.string :float
+        t.string :decimal
+        t.string :boolean
+      end
     end
 
     shared_examples_for 'a encrypted column' do |column:, value:, expected:|
       context "given #{value.inspect} to #{column}" do
         let!(:instance) do
-          post_class.create!(column => value)
+          Post.create!(column => value)
         end
 
         def find_instance
-          post_class.find(instance.id)
+          Post.find(instance.id)
         end
 
         it 'decrypts value from database' do
