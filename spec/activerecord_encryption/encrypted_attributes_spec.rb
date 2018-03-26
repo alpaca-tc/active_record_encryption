@@ -27,7 +27,7 @@ RSpec.describe ActiverecordEncryption::EncryptedAttributes do
         expect(instance.name).to eq('string')
 
         instance.save!
-        result = ActiveRecord::Base.connection.select_all("select * from users where id = #{instance.id}")
+        result = User.connection.select_all("select * from users where id = #{instance.id}")
 
         id, name = result.rows.first
 

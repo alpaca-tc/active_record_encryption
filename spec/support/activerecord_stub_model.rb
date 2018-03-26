@@ -50,8 +50,9 @@ module ActiverecordStubModel
   class StubModel
     attr_reader :model_name, :model_block, :table_block
 
-    def initialize(model_name, &block)
+    def initialize(model_name, adapter: :sqlite3, &block)
       @model_name = model_name.to_s
+      @adapter = adapter
       @model_block = nil
       @table_block = nil
 
@@ -72,7 +73,7 @@ module ActiverecordStubModel
     end
 
     def destroy
-      ActiveRecord::Base.connection.drop_table(table_name) if table_block
+      parent_model.connection.drop_table(table_name) if table_block
       Object.send(:remove_const, @model_name)
     end
 
@@ -82,13 +83,20 @@ module ActiverecordStubModel
       @model_name.tableize
     end
 
+    def parent_model
+      {
+        sqlite3: Sqlite3Adapter,
+        mysql2: Mysql2Adapter
+      }.fetch(@adapter)
+    end
+
     def create_temporary_model
-      klass = Class.new(ActiveRecord::Base, &model_block)
+      klass = Class.new(parent_model, &model_block)
       Object.const_set(model_name, klass)
     end
 
     def create_temporary_table
-      ActiveRecord::Base.connection.create_table(table_name, force: true, &table_block)
+      parent_model.connection.create_table(table_name, force: true, &table_block)
     end
   end
 

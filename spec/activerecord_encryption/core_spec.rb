@@ -49,7 +49,6 @@ RSpec.describe ActiverecordEncryption::Core do
         end
 
         it 'finds by encrypted value' do
-          $DEBUG = true
           relation = Post.where(column => value)
           expect(relation).to eq([instance])
         end
