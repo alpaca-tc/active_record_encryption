@@ -17,7 +17,8 @@ RSpec.describe ActiverecordEncryption::Core do
           time: :time,
           integer: :integer,
           float: :float,
-          decimal: :decimal
+          decimal: :decimal,
+          boolean: :boolean
         )
       end
 
@@ -29,6 +30,7 @@ RSpec.describe ActiverecordEncryption::Core do
         t.binary :integer
         t.binary :float
         t.binary :decimal
+        t.binary :boolean
       end
     end
 
@@ -116,6 +118,18 @@ RSpec.describe ActiverecordEncryption::Core do
       it_behaves_like 'a encrypted column', column: :float, value: -1, expected: -1.0
       it_behaves_like 'a encrypted column', column: :float, value: '1.33', expected: 1.33
       it_behaves_like 'a encrypted column', column: :float, value: nil, expected: nil
+    end
+
+    describe 'boolean' do
+      it_behaves_like 'a encrypted column', column: :boolean, value: 0.33, expected: true
+      it_behaves_like 'a encrypted column', column: :boolean, value: 1, expected: true
+      it_behaves_like 'a encrypted column', column: :boolean, value: '-1', expected: true
+      it_behaves_like 'a encrypted column', column: :boolean, value: 't', expected: true
+      it_behaves_like 'a encrypted column', column: :boolean, value: true, expected: true
+      it_behaves_like 'a encrypted column', column: :boolean, value: false, expected: false
+      it_behaves_like 'a encrypted column', column: :boolean, value: '0', expected: false
+      it_behaves_like 'a encrypted column', column: :boolean, value: 0, expected: false
+      it_behaves_like 'a encrypted column', column: :boolean, value: nil, expected: nil
     end
   end
 end
