@@ -34,6 +34,12 @@ RSpec.describe ActiverecordEncryption::EncryptedAttributes do
         expect(id).to eq(instance.id)
         expect(name).to_not eq(instance.name) # encypted
       end
+
+      context 'when type is boolean' do
+        it do
+          expect { User.encrypted_attributes(name: :boolean) }.to raise_error(TypeError)
+        end
+      end
     end
   end
 end
