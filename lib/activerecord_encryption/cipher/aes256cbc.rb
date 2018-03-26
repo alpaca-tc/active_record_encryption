@@ -29,10 +29,10 @@ module ActiverecordEncryption
       private
 
       def from_cipher(cipher, value)
-        result = ''.dup
-        result << cipher.update(value.to_s)
-        result << cipher.final
-        result.force_encoding('UTF-8')
+        ''.dup.tap do |binary|
+          binary << cipher.update(value.to_s)
+          binary << cipher.final
+        end
       end
     end
   end
