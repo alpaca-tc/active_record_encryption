@@ -12,7 +12,6 @@ RSpec.describe ActiverecordEncryption::Core do
 
         encrypted_attributes(
           string: :string,
-          text: :text,
           date: :date,
           datetime: :datetime,
           time: :time,
@@ -24,15 +23,14 @@ RSpec.describe ActiverecordEncryption::Core do
       end
 
       table do |t|
-        t.string :string
-        t.text   :text
-        t.string :date
-        t.string :datetime
-        t.string :time
-        t.string :integer
-        t.string :float
-        t.string :decimal
-        t.string :boolean
+        t.binary :string
+        t.binary :date
+        t.binary :datetime
+        t.binary :time
+        t.binary :integer
+        t.binary :float
+        t.binary :decimal
+        t.binary :boolean
       end
     end
 

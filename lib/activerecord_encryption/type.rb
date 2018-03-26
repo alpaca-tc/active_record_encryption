@@ -17,24 +17,16 @@ module ActiverecordEncryption
     end
 
     def deserialize(value)
-      return if value.nil?
-
-      decrypted = decrypt(value)
-      @subtype.deserialize(decrypted)
+      deserialized = db_type.deserialize(value)
+      @subtype.deserialize(decrypt(deserialized)) unless deserialized.nil?
     end
 
     def serialize(value)
-      return if value.nil?
-
-      serialized = type_cast_for_database(@subtype.serialize(value))
-      type_cast_for_database(encrypt(serialized)) if serialized
+      serialized = @subtype.serialize(value)
+      db_type.serialize(encrypt(serialized)) unless serialized.nil?
     end
 
     private
-
-    def type_cast_for_database(value)
-      ActiveRecord::Base.connection.type_cast(value)
-    end
 
     def decrypt(value)
       cipher.decrypt(value)
