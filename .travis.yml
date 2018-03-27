@@ -3,3 +3,8 @@ language: ruby
 rvm:
   - 2.5.0
 before_install: gem install bundler -v 1.16.1
+gemfile:
+  - gemfiles/5.0_stable.gemfile
+  - gemfiles/5.1_stable.gemfile
+  - gemfiles/5.2_stable.gemfile
+script: bundle exec rspec

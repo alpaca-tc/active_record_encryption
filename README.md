@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/alpaca-tc/activerecord_encryption.png)](https://travis-ci.org/alpaca-tc/activerecord_encryption)
+
 # [WIP] ActiverecordEncryption
 
 ARの機能を使って、透過的に暗号化を行いたい。
@@ -122,9 +124,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ```
 bundle exec appraisal install
-bundle exec appraisal 4.2-stable rspec
 bundle exec appraisal 5.0-stable rspec
 bundle exec appraisal 5.1-stable rspec
+bundle exec appraisal 5.2-stable rspec
 ```
 
 ## Contributing
