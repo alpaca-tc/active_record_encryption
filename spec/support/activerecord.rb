@@ -34,5 +34,3 @@ end
 RSpec.configuration.before(:suite) do
   Mysql2Adapter.recreate_database
 end
-
-binding.pry
