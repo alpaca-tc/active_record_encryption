@@ -5,15 +5,12 @@ module ActiverecordEncryption
     using(ActiverecordEncryption::SerializerWithCast)
 
     delegate :type, to: :db_type
+    delegate :cast, to: :subtype
 
     def initialize(name, subtype, db_type)
       @name = name
       @subtype = subtype
       @db_type = db_type
-    end
-
-    def cast(value)
-      subtype.cast(value)
     end
 
     def deserialize(value)
