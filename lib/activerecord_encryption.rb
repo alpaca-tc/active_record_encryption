@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require 'active_record'
-require 'activerecord_encryption/version'
+require 'activerecord_schema_hook'
 require 'active_support/core_ext/module/attribute_accessors_per_thread'
 
 module ActiverecordEncryption
+  require 'activerecord_encryption/version'
   require 'activerecord_encryption/serializer_with_cast'
   require 'activerecord_encryption/type'
   require 'activerecord_encryption/cipher'
