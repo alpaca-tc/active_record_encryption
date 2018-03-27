@@ -6,8 +6,6 @@ module ActiverecordEncryption
 
     delegate :type, to: :db_type
 
-    attr_reader :name, :subtype, :db_type
-
     def initialize(name, subtype, db_type)
       @name = name
       @subtype = subtype
@@ -20,15 +18,17 @@ module ActiverecordEncryption
 
     def deserialize(value)
       deserialized = db_type.deserialize(value)
-      @subtype.deserialize(decrypt(deserialized)) unless deserialized.nil?
+      subtype.deserialize(decrypt(deserialized)) unless deserialized.nil?
     end
 
     def serialize(value)
-      serialized = @subtype.serialize(value)
+      serialized = subtype.serialize(value)
       db_type.serialize(encrypt(serialized)) unless serialized.nil?
     end
 
     private
+
+    attr_reader :name, :subtype, :db_type
 
     def decrypt(value)
       cipher.decrypt(value)
