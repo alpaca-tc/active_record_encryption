@@ -3,18 +3,18 @@
 module ActiverecordSchemaHook
   module Hooks
     class << self
-      def register(name, klass, matcher: nil)
-        registry.register(name, klass, matcher)
+      def register(name, &block)
+        registry[name] = block
       end
 
       def deregister(name)
-        registry.deregister(name)
+        registry.delete(name)
       end
 
       private
 
       def registry
-        @registry ||= Registry.new
+        @registry ||= {}
       end
     end
   end

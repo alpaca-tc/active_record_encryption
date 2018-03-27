@@ -4,12 +4,14 @@ RSpec.describe ActiverecordSchemaHook::Hooks do
   describe 'ClassMethods' do
     describe '.register' do
       subject do
-        -> { described_class.register(:activerecord_encryption, Class, matcher: ->(*) { true }) }
+        -> {
+          described_class.register(:activerecord_encryption) {}
+        }
       end
 
       it 'register hook' do
         is_expected.to change {
-          registry.send(:registrations).size
+          registry.size
         }.from(0).to(1)
       end
     end
@@ -20,12 +22,12 @@ RSpec.describe ActiverecordSchemaHook::Hooks do
       end
 
       before do
-        described_class.register(:activerecord_encryption, Class, matcher: ->(*) { true })
+        described_class.register(:activerecord_encryption) {}
       end
 
       it 'deregister hook' do
         is_expected.to change {
-          registry.send(:registrations).size
+          registry.size
         }.from(1).to(0)
       end
     end

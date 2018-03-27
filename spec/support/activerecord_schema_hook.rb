@@ -8,7 +8,7 @@ Module.new do
       allow(described_class).to receive(:registry).and_return(registry)
     end
 
-    let(:registry) { ActiverecordSchemaHook::Hooks::Registry.new }
+    let(:registry) { {} }
   end
 
   RSpec.configure do |config|
