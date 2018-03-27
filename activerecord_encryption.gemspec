@@ -23,15 +23,16 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'activerecord', '>= 5.0', '~> 5.2.0.rc2'
+  spec.add_dependency 'activerecord', '>= 5.0'
 
   spec.add_development_dependency 'bundler', '~> 1.16'
-  spec.add_development_dependency 'guard-rspec', '~> 4.7.3'
+  spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard-rubocop'
-  spec.add_development_dependency 'mysql2', '~> 0.4.9'
+  spec.add_development_dependency 'mysql2', '< 0.5.0'
   spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~> 0.53.0'
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'sqlite3'
+  spec.add_development_dependency 'appraisal'
 end
