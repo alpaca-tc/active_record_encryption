@@ -11,6 +11,12 @@ module ActiverecordSchemaHook
         registry.delete(name)
       end
 
+      def run_hooks(klass)
+        registry.each_value do |block|
+          block.call(klass)
+        end
+      end
+
       private
 
       def registry
