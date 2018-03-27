@@ -7,12 +7,6 @@ RSpec.describe ActiverecordSchemaHook::Hooks do
         -> { described_class.register(:activerecord_encryption, Class, matcher: ->(*) { true }) }
       end
 
-      before do
-        allow(described_class).to receive(:registry).and_return(registry)
-      end
-
-      let(:registry) { ActiverecordSchemaHook::Hooks::Registry.new }
-
       it 'register hook' do
         is_expected.to change {
           registry.send(:registrations).size
@@ -26,11 +20,8 @@ RSpec.describe ActiverecordSchemaHook::Hooks do
       end
 
       before do
-        allow(described_class).to receive(:registry).and_return(registry)
         described_class.register(:activerecord_encryption, Class, matcher: ->(*) { true })
       end
-
-      let(:registry) { ActiverecordSchemaHook::Hooks::Registry.new }
 
       it 'deregister hook' do
         is_expected.to change {
