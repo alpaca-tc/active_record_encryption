@@ -5,9 +5,10 @@ require 'openssl'
 module ActiverecordEncryption
   class Cipher
     class Aes256cbc < Cipher
-      def initialize(password:, salt:)
+      def initialize(password:, salt:, adapter_class: ActiveRecord::Base)
         @password = password
         @salt = salt
+        @adapter_class = adapter_class
       end
 
       def decrypt(value)
@@ -15,7 +16,10 @@ module ActiverecordEncryption
         cipher.decrypt
         cipher.pkcs5_keyivgen(@password, @salt)
 
-        from_cipher(cipher, value)
+        ''.dup.tap do |binary|
+          binary << cipher.update(value)
+          binary << cipher.final
+        end
       end
 
       def encrypt(value)
@@ -23,16 +27,18 @@ module ActiverecordEncryption
         cipher.encrypt
         cipher.pkcs5_keyivgen(@password, @salt)
 
-        from_cipher(cipher, value)
+        ''.dup.tap do |binary|
+          binary << cipher.update(type_cast(value))
+          binary << cipher.final
+        end
       end
 
       private
 
-      def from_cipher(cipher, value)
-        ''.dup.tap do |binary|
-          binary << cipher.update(value.to_s)
-          binary << cipher.final
-        end
+      def type_cast(value)
+        quoted_value = @adapter_class.connection.type_cast(value)
+        quoted_value = quoted_value.to_s if quoted_value.is_a?(Numeric)
+        quoted_value
       end
     end
   end
