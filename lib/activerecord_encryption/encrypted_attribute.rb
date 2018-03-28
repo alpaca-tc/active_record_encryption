@@ -7,13 +7,16 @@ module ActiverecordEncryption
     module ClassMethods
       def encrypted_attribute(name, subtype, **options)
         name = name.to_s
-        subtype = ActiveRecord::Type.lookup(subtype, **options.except(:default)) if subtype.is_a?(Symbol)
 
-        # Define user provided attribute when options contains :default
-        attribute(name, subtype, **options) if options.key?(:default)
+        attribute(name, subtype, **options)
+        decorate_encrypted_attribute(name)
+      end
 
-        decorate_attribute_type(name, :encrypted) do |db_type|
-          ActiverecordEncryption::Type.new(name, subtype, db_type)
+      private
+
+      def decorate_encrypted_attribute(name)
+        decorate_attribute_type(name, :encrypted) do |subtype|
+          ActiverecordEncryption::Type.new(name, subtype)
         end
       end
     end

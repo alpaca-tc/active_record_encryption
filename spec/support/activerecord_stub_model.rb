@@ -3,25 +3,14 @@
 module ActiverecordStubModel
   extend ActiveSupport::Concern
 
-  included do
-    before do
-      stubbed_models.each(&:build)
-    end
-
-    after do
-      stubbed_models.each(&:destroy)
-    end
-
-    let(:stubbed_models) { [] }
-  end
-
   class_methods do
     def stub_model(model_name, *options, &block)
       model = StubModel.new(model_name, *options, &block)
 
       around do |example|
-        stubbed_models.push(model)
+        model.build
         example.run
+        model.destroy
       end
     end
   end
@@ -55,6 +44,7 @@ module ActiverecordStubModel
       @adapter = adapter
       @model_block = nil
       @table_block = nil
+      @klass = nil
 
       instance_exec(&block)
     end
@@ -73,8 +63,10 @@ module ActiverecordStubModel
     end
 
     def destroy
+      @klass.connection.schema_cache.clear!
       parent_model.connection.drop_table(table_name) if table_block
       Object.send(:remove_const, @model_name)
+      @klass = nil
     end
 
     private
@@ -91,8 +83,10 @@ module ActiverecordStubModel
     end
 
     def create_temporary_model
-      klass = Class.new(parent_model, &model_block)
-      Object.const_set(model_name, klass)
+      @klass = Class.new(parent_model)
+      Object.const_set(model_name, @klass)
+
+      @klass.instance_exec(&@model_block)
     end
 
     def create_temporary_table

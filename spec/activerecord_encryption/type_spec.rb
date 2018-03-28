@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 RSpec.describe ActiverecordEncryption::Type do
+  describe '#type' do
+    subject { instance.type }
+    let(:instance) { described_class.new(:name, subtype_instance) }
+    let(:subtype_instance) { ActiveRecord::Type.lookup(:integer) }
+    it { is_expected.to eq(subtype_instance.type) }
+  end
+
   describe '#cast' do
     subject { instance.cast(value) }
 
-    let(:instance) { described_class.new(:name, subtype_instance, db_type_instance) }
+    let(:instance) { described_class.new(:name, subtype_instance) }
     let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
-    let(:db_type_instance) { ActiveRecord::Type.lookup(:string) }
 
-    context 'when db_type is integer' do
+    context 'when subtype is integer' do
       let(:subtype) { :integer }
 
       context 'given 1' do
@@ -22,7 +28,7 @@ RSpec.describe ActiverecordEncryption::Type do
       end
     end
 
-    context 'when db_type is datetime' do
+    context 'when subtype is datetime' do
       let(:subtype) { :datetime }
 
       context 'given "2018-01-01"' do
@@ -40,11 +46,10 @@ RSpec.describe ActiverecordEncryption::Type do
   describe '#deserialize' do
     subject { instance.cast(value) }
 
-    let(:instance) { described_class.new(:name, subtype_instance, db_type_instance) }
+    let(:instance) { described_class.new(:name, subtype_instance) }
     let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
-    let(:db_type_instance) { ActiveRecord::Type.lookup(:string) }
 
-    context 'when db_type is integer' do
+    context 'when subtype is integer' do
       let(:subtype) { :integer }
 
       context 'given 1' do

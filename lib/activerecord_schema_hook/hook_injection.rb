@@ -4,6 +4,10 @@ module ActiverecordSchemaHook
   module HookInjection
     extend ActiveSupport::Concern
 
+    included do
+      ActiverecordSchemaHook::Hooks.dependencies.push(self)
+    end
+
     module ClassMethods
       private
 

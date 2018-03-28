@@ -4,28 +4,25 @@ module ActiverecordEncryption
   class Type < ActiveRecord::Type::Value
     using(ActiverecordEncryption::SerializerWithCast)
 
-    delegate :type, to: :db_type
-    delegate :cast, to: :subtype
+    delegate :type, :cast, to: :subtype
 
-    def initialize(name, subtype, db_type)
+    def initialize(name, subtype)
       @name = name
       @subtype = subtype
-      @db_type = db_type
     end
 
     def deserialize(value)
-      deserialized = db_type.deserialize(value)
-      subtype.deserialize(decrypt(deserialized)) unless deserialized.nil?
+      subtype.deserialize(decrypt(value)) unless value.nil?
     end
 
     def serialize(value)
       serialized = subtype.serialize(value)
-      db_type.serialize(encrypt(serialized)) unless serialized.nil?
+      encrypt(serialized) unless serialized.nil?
     end
 
     private
 
-    attr_reader :name, :subtype, :db_type
+    attr_reader :name, :subtype
 
     def decrypt(value)
       cipher.decrypt(value)
