@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'active_record'
-require 'activerecord_schema_hook'
 require 'active_support/core_ext/module/attribute_accessors_per_thread'
 
 module ActiverecordEncryption
@@ -12,7 +11,6 @@ module ActiverecordEncryption
   require 'activerecord_encryption/cipher/aes256cbc'
   require 'activerecord_encryption/encrypted_attribute'
   require 'activerecord_encryption/exceptions'
-  require 'activerecord_encryption/comment_schema'
 
   thread_mattr_accessor(:cipher)
 end
