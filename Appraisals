@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 appraise '5.0-stable' do
   gem 'activerecord', git: 'https://github.com/rails/rails', branch: '5-0-stable'
 end
