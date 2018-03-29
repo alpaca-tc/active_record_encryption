@@ -3,8 +3,8 @@
 Module.new do
   def build_cipher
     ActiverecordEncryption::Cipher::Aes256cbc.new(
-      password: OpenSSL::Random.random_bytes(8),
-      salt: OpenSSL::Random.random_bytes(8)
+      key: OpenSSL::Cipher.new('AES-256-CBC').random_key,
+      iv: OpenSSL::Random.random_bytes(16)
     )
   end
 
