@@ -5,10 +5,16 @@ require 'openssl'
 module ActiverecordEncryption
   class Cipher
     class Aes256cbc < Cipher
+      attr_reader :password, :salt, :adapter_class
+
       def initialize(password:, salt: nil, adapter_class: ActiveRecord::Base)
         @password = password
         @salt = salt
         @adapter_class = adapter_class
+      end
+
+      def ==(other)
+        password == other.password && salt == other.salt && adapter_class == other.adapter_class
       end
 
       def decrypt(value)
