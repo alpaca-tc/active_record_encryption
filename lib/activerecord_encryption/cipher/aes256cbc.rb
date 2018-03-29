@@ -5,6 +5,8 @@ require 'openssl'
 module ActiverecordEncryption
   class Cipher
     class Aes256cbc < Cipher
+      attr_reader :key, :iv
+
       def initialize(key:, iv: '')
         @key = key
         @iv = iv
@@ -31,10 +33,6 @@ module ActiverecordEncryption
         cipher.iv = iv
         cipher.update(value) + cipher.final
       end
-
-      private
-
-      attr_reader :key, :iv
     end
   end
 end
