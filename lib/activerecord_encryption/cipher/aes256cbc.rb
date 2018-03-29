@@ -25,6 +25,7 @@ module ActiverecordEncryption
         ''.dup.tap do |binary|
           binary << cipher.update(value)
           binary << cipher.final
+          binary.force_encoding('UTF-8')
         end
       end
 

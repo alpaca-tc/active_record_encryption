@@ -50,7 +50,7 @@ RSpec.describe ActiverecordEncryption::Cipher::Aes256cbc do
 
   describe '#decrypt' do
     subject { instance.decrypt(encrypted_value) }
-    let(:value) { 'hello world' }
+    let(:value) { '港区芝5-33-1' }
     let(:encrypted_value) { described_class.new(password: password, salt: salt).encrypt(value) }
 
     context 'decrypt by invalid salt' do
@@ -59,6 +59,8 @@ RSpec.describe ActiverecordEncryption::Cipher::Aes256cbc do
     end
 
     context 'decrypt by valid salt/password' do
+      let(:encrypted_value) { instance.encrypt(value) }
+
       it 'decrypts value from encrypted' do
         is_expected.to eq(value)
       end
