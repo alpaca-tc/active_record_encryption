@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
+require 'singleton'
+
 module ActiverecordEncryption
   class Quoter
     include ActiveRecord::ConnectionAdapters::Quoting
+    include Singleton
 
     private
 
