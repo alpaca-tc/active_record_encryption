@@ -14,4 +14,12 @@ module ActiverecordEncryption
   require 'activerecord_encryption/exceptions'
 
   thread_mattr_accessor(:cipher)
+
+  def self.with_cipher(new_cipher)
+    previous = cipher
+    self.cipher = new_cipher
+    yield
+  ensure
+    self.cipher = previous
+  end
 end
