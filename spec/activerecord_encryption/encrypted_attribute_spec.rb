@@ -52,6 +52,17 @@ RSpec.describe ActiverecordEncryption::EncryptedAttribute do
             expect(relation).to eq([instance])
           end
 
+          it 'cast value' do
+            post = Post.create!(column => expected)
+            expect(post.public_send(column)).to eq(expected)
+
+            post.public_send(:"#{column}=", value)
+            expect(post).to_not be_changed
+
+            post.public_send(:"#{column}=", expected)
+            expect(post).to_not be_changed
+          end
+
           if value.nil?
             it 'encrypts value in predicate query' do
               relation = Post.where(column => value)
@@ -85,6 +96,9 @@ RSpec.describe ActiverecordEncryption::EncryptedAttribute do
         it_behaves_like 'a encrypted column', column: :string, value: 'text', expected: 'text'
         it_behaves_like 'a encrypted column', column: :string, value: 1, expected: '1'
         it_behaves_like 'a encrypted column', column: :string, value: nil, expected: nil
+        it_behaves_like 'a encrypted column', column: :string, value: 'あ', expected: 'あ'
+        it_behaves_like 'a encrypted column', column: :string, value: 'ミョウジ', expected: 'ミョウジ'
+        it_behaves_like 'a encrypted column', column: :string, value: '🍺', expected: '🍺'
       end
 
       describe 'datetime' do

@@ -9,20 +9,22 @@ module ActiverecordEncryption
     def initialize(name, subtype)
       @name = name
       @subtype = subtype
+      @binary = ActiveRecord::Type.lookup(:binary)
     end
 
     def deserialize(value)
-      subtype.deserialize(decrypt(value)) unless value.nil?
+      deserialized = binary.deserialize(value)
+      subtype.deserialize(decrypt(deserialized)) unless deserialized.nil?
     end
 
     def serialize(value)
       serialized = subtype.serialize(value)
-      encrypt(serialized) unless serialized.nil?
+      binary.serialize(encrypt(serialized)) unless serialized.nil?
     end
 
     private
 
-    attr_reader :name, :subtype
+    attr_reader :name, :subtype, :binary
 
     def decrypt(value)
       cipher.decrypt(value)
