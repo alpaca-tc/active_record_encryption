@@ -49,11 +49,19 @@ RSpec.describe ActiverecordEncryption::Cipher::Aes256cbc do
   end
 
   describe '#decrypt' do
-    subject { instance.encrypt(value) }
+    subject { instance.decrypt(encrypted_value) }
     let(:value) { 'hello world' }
+    let(:encrypted_value) { described_class.new(password: password, salt: salt).encrypt(value) }
 
-    it 'decrypts value from encrypted' do
-      expect(instance.decrypt(subject)).to eq(value)
+    context 'decrypt by invalid salt' do
+      let(:instance) { described_class.new(password: password) }
+      it { expect { subject }.to raise_error(OpenSSL::Cipher::CipherError) }
+    end
+
+    context 'decrypt by valid salt/password' do
+      it 'decrypts value from encrypted' do
+        is_expected.to eq(value)
+      end
     end
   end
 end

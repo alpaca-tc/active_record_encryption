@@ -5,7 +5,7 @@ require 'openssl'
 module ActiverecordEncryption
   class Cipher
     class Aes256cbc < Cipher
-      def initialize(password:, salt:, adapter_class: ActiveRecord::Base)
+      def initialize(password:, salt: nil, adapter_class: ActiveRecord::Base)
         @password = password
         @salt = salt
         @adapter_class = adapter_class
