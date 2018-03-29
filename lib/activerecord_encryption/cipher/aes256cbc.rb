@@ -5,40 +5,36 @@ require 'openssl'
 module ActiverecordEncryption
   class Cipher
     class Aes256cbc < Cipher
-      attr_reader :password, :salt
-
-      def initialize(password:, salt: nil)
-        @password = password
-        @salt = salt
+      def initialize(key:, iv: '')
+        @key = key
+        @iv = iv
       end
 
       def ==(other)
-        other.is_a?(self.class) && password == other.password && salt == other.salt
+        other.is_a?(self.class) && key == other.key && iv == other.iv
       end
 
       def decrypt(value)
         cipher = OpenSSL::Cipher.new('AES-256-CBC')
         cipher.decrypt
-        cipher.pkcs5_keyivgen(@password, @salt)
+        cipher.key = key
+        cipher.iv = iv
 
-        ''.dup.tap do |binary|
-          binary << cipher.update(value)
-          binary << cipher.final
-          binding.pry
-          binary.encode('UTF-8')
-        end
+        # FIXME: Why need 'force_encoding' ?
+        (cipher.update(value) + cipher.final).force_encoding('UTF-8')
       end
 
       def encrypt(value)
         cipher = OpenSSL::Cipher.new('AES-256-CBC')
         cipher.encrypt
-        cipher.pkcs5_keyivgen(@password, @salt)
-
-        ''.dup.tap do |binary|
-          binary << cipher.update(value)
-          binary << cipher.final
-        end
+        cipher.key = key
+        cipher.iv = iv
+        cipher.update(value) + cipher.final
       end
+
+      private
+
+      attr_reader :key, :iv
     end
   end
 end

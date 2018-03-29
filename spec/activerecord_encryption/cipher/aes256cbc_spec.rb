@@ -2,11 +2,11 @@
 
 RSpec.describe ActiverecordEncryption::Cipher::Aes256cbc do
   let(:instance) do
-    described_class.new(password: password, salt: salt)
+    described_class.new(key: key, iv: iv)
   end
 
-  let(:password) { 'password' }
-  let(:salt) { OpenSSL::Random.random_bytes(8) }
+  let(:key) { OpenSSL::Cipher.new('AES-256-CBC').random_key }
+  let(:iv) { OpenSSL::Random.random_bytes(16) }
 
   describe '#encrypt' do
     subject { instance.encrypt(value) }
@@ -29,19 +29,19 @@ RSpec.describe ActiverecordEncryption::Cipher::Aes256cbc do
 
   describe '#decrypt' do
     subject { instance.decrypt(encrypted_value) }
-    let(:encrypted_value) { described_class.new(password: password, salt: salt).encrypt(value) }
+    let(:encrypted_value) { described_class.new(key: key, iv: iv).encrypt(value) }
 
-    context 'decrypt by invalid salt' do
-      let(:instance) { described_class.new(password: password) }
+    context 'decrypt by invalid iv' do
+      let(:instance) { described_class.new(key: key, iv: OpenSSL::Random.random_bytes(16)) }
       let(:value) { 'value' }
       it { expect { subject }.to raise_error(OpenSSL::Cipher::CipherError) }
     end
 
-    context 'decrypt by valid salt/password' do
+    context 'decrypt by valid iv/key' do
       let(:encrypted_value) { instance.encrypt(value) }
       let(:value) { '港区芝5-33-1' } # 3byte characters
 
-      fit 'decrypts value from encrypted' do
+      it 'decrypts value from encrypted' do
         is_expected.to eq(value)
       end
     end
