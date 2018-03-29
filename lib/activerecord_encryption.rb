@@ -11,6 +11,7 @@ module ActiverecordEncryption
   require 'activerecord_encryption/cipher/aes256cbc'
   require 'activerecord_encryption/cipher/aes256ecb'
   require 'activerecord_encryption/encrypted_attribute'
+  require 'activerecord_encryption/quoter'
   require 'activerecord_encryption/exceptions'
 
   thread_mattr_accessor(:cipher)
