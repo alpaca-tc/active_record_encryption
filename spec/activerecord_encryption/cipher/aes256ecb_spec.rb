@@ -2,11 +2,11 @@
 
 RSpec.describe ActiverecordEncryption::Cipher::Aes256ecb do
   let(:instance) do
-    described_class.new(password: password, salt: salt)
+    described_class.new(key: key, iv: iv)
   end
 
-  let(:password) { 'password' }
-  let(:salt) { OpenSSL::Random.random_bytes(8) }
+  let(:key) { OpenSSL::Cipher.new('AES-256-ECB').random_key }
+  let(:iv) { OpenSSL::Cipher.new('AES-256-ECB').random_iv }
 
   describe '#encrypt' do
     subject { instance.encrypt(value) }
@@ -24,27 +24,6 @@ RSpec.describe ActiverecordEncryption::Cipher::Aes256ecb do
       expect(instance.encrypt('🍺').length).to eq(16)
       expect(instance.encrypt('🍺' * 3).length).to eq(16)
       expect(instance.encrypt('🍺' * 4).length).to eq(32)
-    end
-
-    context 'time' do
-      def encrypt_and_decrypt(value)
-        instance.decrypt(instance.encrypt(value))
-      end
-
-      it 'considers that time zone' do
-        local_time = Time.use_zone('Asia/Tokyo') do
-          Time.current
-        end
-
-        gmt_time = Time.use_zone('GMT') do
-          Time.current
-        end
-
-        datetime_type = ActiveRecord::Type.lookup(:datetime)
-
-        expect(datetime_type.cast(encrypt_and_decrypt(local_time))).to eq(local_time)
-        expect(datetime_type.cast(encrypt_and_decrypt(gmt_time))).to eq(gmt_time)
-      end
     end
   end
 

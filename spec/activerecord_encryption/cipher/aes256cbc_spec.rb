@@ -6,7 +6,7 @@ RSpec.describe ActiverecordEncryption::Cipher::Aes256cbc do
   end
 
   let(:key) { OpenSSL::Cipher.new('AES-256-CBC').random_key }
-  let(:iv) { OpenSSL::Random.random_bytes(16) }
+  let(:iv) { OpenSSL::Cipher.new('AES-256-CBC').random_iv }
 
   describe '#encrypt' do
     subject { instance.encrypt(value) }

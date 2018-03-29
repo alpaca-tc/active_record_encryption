@@ -5,41 +5,32 @@ require 'openssl'
 module ActiverecordEncryption
   class Cipher
     class Aes256ecb < Cipher
-      def initialize(password:, salt:, adapter_class: ActiveRecord::Base)
-        @password = password
-        @salt = salt
-        @adapter_class = adapter_class
+      def initialize(key:, iv:)
+        @key = key
+        @iv = iv
       end
 
       def decrypt(value)
         cipher = OpenSSL::Cipher.new('AES-256-ECB')
         cipher.decrypt
-        cipher.pkcs5_keyivgen(@password, @salt)
+        cipher.key = key
+        cipher.iv = iv
 
-        ''.dup.tap do |binary|
-          binary << cipher.update(value)
-          binary << cipher.final
-        end
+        cipher.update(value) + cipher.final
       end
 
       def encrypt(value)
         cipher = OpenSSL::Cipher.new('AES-256-ECB')
         cipher.encrypt
-        cipher.pkcs5_keyivgen(@password, @salt)
+        cipher.key = key
+        cipher.iv = iv
 
-        ''.dup.tap do |binary|
-          binary << cipher.update(type_cast(value))
-          binary << cipher.final
-        end
+        cipher.update(value) + cipher.final
       end
 
       private
 
-      def type_cast(value)
-        quoted_value = @adapter_class.connection.type_cast(value)
-        quoted_value = quoted_value.to_s if quoted_value.is_a?(Numeric)
-        quoted_value
-      end
+      attr_reader :key, :iv
     end
   end
 end
