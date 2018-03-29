@@ -2,7 +2,7 @@
 
 RSpec.describe ActiverecordEncryption::Quoter do
   describe '#type_cast' do
-    subject { described_class.new.type_cast(value) }
+    subject { described_class.instance.type_cast(value) }
 
     context 'given string' do
       let(:value) { 'hello world' }

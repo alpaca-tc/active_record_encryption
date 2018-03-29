@@ -26,12 +26,17 @@ module ActiverecordEncryption
 
     attr_reader :name, :subtype, :binary
 
+    def type_cast_to_plan_ruby_string(value)
+      ActiverecordEncryption::Quoter.instance.type_cast(value)
+    end
+
     def decrypt(value)
       cipher.decrypt(value)
     end
 
     def encrypt(value)
-      cipher.encrypt(value)
+      string = type_cast_to_plan_ruby_string(value)
+      cipher.encrypt(string)
     end
 
     def cipher

@@ -44,7 +44,11 @@ RSpec.describe ActiverecordEncryption::Type do
   end
 
   describe '#deserialize' do
-    subject { instance.cast(value) }
+    subject { instance.deserialize(value) }
+
+    before do
+      ActiverecordEncryption.cipher = build_cipher
+    end
 
     let(:instance) { described_class.new(:name, subtype_instance) }
     let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
@@ -52,14 +56,45 @@ RSpec.describe ActiverecordEncryption::Type do
     context 'when subtype is integer' do
       let(:subtype) { :integer }
 
-      context 'given 1' do
-        let(:value) { 1 }
+      context 'given "1"' do
+        let(:value) { ActiverecordEncryption.cipher.encrypt('1') }
         it { is_expected.to eq(1) }
       end
+    end
+  end
 
-      context 'given "1"' do
-        let(:value) { '1' }
-        it { is_expected.to eq(1) }
+  describe '#serialize' do
+    subject { instance.serialize(value) }
+
+    before do
+      ActiverecordEncryption.cipher = build_cipher
+    end
+
+    let(:instance) { described_class.new(:name, subtype_instance) }
+    let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
+
+    context 'when subtype is datetime' do
+      let(:subtype) { :datetime }
+
+      context 'given time' do
+        def serialize_and_deserialize(value)
+          instance.deserialize(instance.serialize(value))
+        end
+
+        it 'considers that time zone' do
+          local_time = Time.use_zone('Asia/Tokyo') do
+            Time.current
+          end
+
+          gmt_time = Time.use_zone('GMT') do
+            Time.current
+          end
+
+          datetime_type = ActiveRecord::Type.lookup(:datetime)
+
+          expect(datetime_type.cast(serialize_and_deserialize(local_time))).to eq(local_time)
+          expect(datetime_type.cast(serialize_and_deserialize(gmt_time))).to eq(gmt_time)
+        end
       end
     end
   end
