@@ -7,6 +7,16 @@ module ActiverecordEncryption
     include ActiveRecord::ConnectionAdapters::Quoting
     include Singleton
 
+    # minimum length of string for encryption
+    def unquoted_true
+      't'
+    end
+
+    # minimum length of string for encryption
+    def unquoted_false
+      'f'
+    end
+
     private
 
     # Cast value to string
