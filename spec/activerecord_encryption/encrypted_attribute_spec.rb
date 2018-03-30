@@ -7,7 +7,7 @@ RSpec.describe ActiverecordEncryption::EncryptedAttribute do
     end
 
     describe 'encryption' do
-      stub_model('Post', adapter: :mysql2) do
+      stub_model('Post') do
         model do
           include(ActiverecordEncryption::EncryptedAttribute)
 
@@ -146,7 +146,7 @@ RSpec.describe ActiverecordEncryption::EncryptedAttribute do
     end
 
     describe 'with default value' do
-      stub_model('Post', adapter: :mysql2) do
+      stub_model('Post') do
         model do
           include(ActiverecordEncryption::EncryptedAttribute)
 
