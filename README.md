@@ -9,9 +9,9 @@ It uses the ActiveRecord's Attribute API, and it is a simpler implementation tha
 
 Add this line to your application's Gemfile:
 
-# ```ruby
-# gem 'activerecord_encryption'
-# ```
+```ruby
+gem 'activerecord_encryption'
+```
 
 ## Usage
 
