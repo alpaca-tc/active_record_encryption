@@ -31,6 +31,7 @@ class Mysql2Adapter < ActiveRecord::Base
   end
 end
 
+# Create database at the first
 RSpec.configuration.before(:suite) do
   Mysql2Adapter.recreate_database
 end

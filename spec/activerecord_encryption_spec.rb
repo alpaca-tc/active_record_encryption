@@ -6,6 +6,10 @@ RSpec.describe ActiverecordEncryption do
   end
 
   describe 'with_cipher' do
+    before do
+      described_class.cipher = nil
+    end
+
     it 'assigns cipher in the block' do
       cipher = ActiverecordEncryption::Cipher.new
 

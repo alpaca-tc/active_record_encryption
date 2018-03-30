@@ -2,12 +2,12 @@
 
 module ActiverecordEncryption
   class Cipher
-    def encrypt(_value)
-      raise NotImplementedError, 'not implemented yet'
+    def encrypt(value)
+      value
     end
 
-    def decrypt(_value)
-      raise NotImplementedError, 'not implemented yet'
+    def decrypt(value)
+      value
     end
   end
 end

@@ -3,6 +3,7 @@
 require 'singleton'
 
 module ActiverecordEncryption
+  # Serialize ruby object to string for encryption.
   class Quoter
     include ActiveRecord::ConnectionAdapters::Quoting
     include Singleton

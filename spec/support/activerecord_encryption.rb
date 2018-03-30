@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'activerecord_encryption/testing/test_cipher'
+
 Module.new do
   def build_cipher
     ActiverecordEncryption::Cipher::Aes256cbc.new(
@@ -13,7 +15,8 @@ end
 
 RSpec.configure do |config|
   config.around do |example|
-    ActiverecordEncryption.cipher = nil
-    example.run
+    ActiverecordEncryption.with_cipher(build_cipher) do
+      example.run
+    end
   end
 end
