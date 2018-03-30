@@ -14,33 +14,20 @@ module ActiverecordEncryption
 
     def deserialize(value)
       deserialized = binary.deserialize(value)
-      subtype.deserialize(decrypt(deserialized)) unless deserialized.nil?
+      subtype.deserialize(encryptor.decrypt(deserialized)) unless deserialized.nil?
     end
 
     def serialize(value)
       serialized = subtype.serialize(value)
-      binary.serialize(encrypt(serialized)) unless serialized.nil?
+      binary.serialize(encryptor.encrypt(serialized)) unless serialized.nil?
     end
 
     private
 
     attr_reader :name, :subtype, :binary
 
-    def type_cast_to_plan_ruby_string(value)
-      ActiverecordEncryption::Quoter.instance.type_cast(value)
-    end
-
-    def decrypt(value)
-      cipher.decrypt(value)
-    end
-
-    def encrypt(value)
-      string = type_cast_to_plan_ruby_string(value)
-      cipher.encrypt(string)
-    end
-
-    def cipher
-      ActiverecordEncryption.cipher || raise(ActiverecordEncryption::MissingCipherError, 'missing cipher')
+    def encryptor
+      ActiverecordEncryption::Encryptor
     end
   end
 end

@@ -4,7 +4,7 @@ require 'digest'
 
 module ActiverecordEncryption
   module Testing
-    class TestCipher < ActiverecordEncryption::Cipher
+    class TestCipher < ActiverecordEncryption::Encryptor::Cipher
       attr_reader :key
 
       def initialize(key: SecureRandom.hex)
@@ -16,21 +16,15 @@ module ActiverecordEncryption
       end
 
       def encrypt(value)
-        super("#{value}#{digest}")
+        super("#{value}#{key}")
       end
 
       def decrypt(value)
-        if value.match?(/#{digest}$/)
-          super(value.sub(/#{digest}$/, ''))
+        if value.match?(/#{key}$/)
+          super(value.sub(/#{key}$/, ''))
         else
           raise InvalidMessage, 'invalid value given'
         end
-      end
-
-      private
-
-      def digest
-        Digest::SHA256.digest(key)
       end
     end
   end

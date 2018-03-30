@@ -47,17 +47,18 @@ RSpec.describe ActiverecordEncryption::Type do
     subject { instance.deserialize(value) }
 
     before do
-      ActiverecordEncryption.cipher = build_cipher
+      ActiverecordEncryption.cipher = cipher
     end
 
     let(:instance) { described_class.new(:name, subtype_instance) }
     let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
+    let(:cipher) { build_cipher }
 
     context 'when subtype is integer' do
       let(:subtype) { :integer }
 
       context 'given "1"' do
-        let(:value) { ActiverecordEncryption.cipher.encrypt('1') }
+        let(:value) { ActiverecordEncryption::Encryptor.encrypt('1') }
         it { is_expected.to eq(1) }
       end
     end

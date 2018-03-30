@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 module ActiverecordEncryption
-  class Cipher
-    def encrypt(value)
-      value
-    end
+  module Encryptor
+    class Cipher
+      def encrypt(value)
+        value
+      end
 
-    def decrypt(value)
-      value
+      def decrypt(value)
+        value
+      end
     end
   end
 end

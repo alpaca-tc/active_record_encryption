@@ -86,7 +86,7 @@ RSpec.describe ActiverecordEncryption::EncryptedAttribute do
 
             it 'encrypts with specific cipher' do
               ActiverecordEncryption.cipher = build_cipher
-              expect { find_instance.inspect }.to raise_error(OpenSSL::Cipher::CipherError)
+              expect { find_instance.inspect }.to raise_error(ActiverecordEncryption::InvalidMessage)
             end
           end
         end

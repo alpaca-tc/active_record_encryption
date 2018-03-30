@@ -4,10 +4,7 @@ require 'activerecord_encryption/testing/test_cipher'
 
 Module.new do
   def build_cipher
-    ActiverecordEncryption::Cipher::Aes256cbc.new(
-      key: OpenSSL::Cipher.new('AES-256-CBC').random_key,
-      iv: OpenSSL::Random.random_bytes(16)
-    )
+    ActiverecordEncryption::Testing::TestCipher.new
   end
 
   RSpec.configuration.include(self)

@@ -11,7 +11,7 @@ RSpec.describe ActiverecordEncryption do
     end
 
     it 'assigns cipher in the block' do
-      cipher = ActiverecordEncryption::Cipher.new
+      cipher = build_cipher
 
       expect(described_class.cipher).to be_nil
 
