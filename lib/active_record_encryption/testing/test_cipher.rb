@@ -20,7 +20,9 @@ module ActiverecordEncryption
       end
 
       def decrypt(value)
-        if value.match?(/#{key}$/)
+        value = value.to_s
+
+        if value.match(/#{key}$/)
           super(value.sub(/#{key}$/, ''))
         else
           raise InvalidMessage, 'invalid value given'
