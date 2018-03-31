@@ -27,12 +27,10 @@ module ActiveRecordEncryption
       end
     end
 
-    # Backport
-    if ActiveRecord.gem_version < Gem::Version.create('5.2.0')
-      refine ActiveModel::Type::DateTime do
-        def serialize(value)
-          super(cast(value))
-        end
+    # Backport Rails5.2
+    refine ActiveModel::Type::DateTime do
+      def serialize(value)
+        super(cast(value))
       end
     end
   end
