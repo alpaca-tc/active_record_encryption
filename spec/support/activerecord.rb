@@ -13,7 +13,7 @@ class Mysql2Adapter < ActiveRecord::Base
 
   CONFIGURATION = {
     adapter: 'mysql2',
-    database: ENV.fetch('ACTIVERECORD_ENCRYPTION_DBNAME', 'activerecord_encryption'),
+    database: ENV.fetch('ACTIVERECORD_ENCRYPTION_DBNAME', 'active_record_encryption'),
     username: ENV.fetch('ACTIVERECORD_ENCRYPTION_USERNAME', 'root'),
     password: ENV.fetch('ACTIVERECORD_ENCRYPTION_PASSWORD', ''),
     host: ENV.fetch('ACTIVERECORD_ENCRYPTION_HOST', '127.0.0.1')

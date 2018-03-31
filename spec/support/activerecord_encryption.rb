@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'activerecord_encryption/testing/test_cipher'
+require 'active_record_encryption/testing/test_cipher'
 
 Module.new do
   def build_cipher
