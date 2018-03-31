@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe ActiverecordEncryption do
+RSpec.describe ActiveRecordEncryption do
   it 'has a version number' do
-    expect(ActiverecordEncryption::VERSION).not_to be nil
+    expect(ActiveRecordEncryption::VERSION).not_to be nil
   end
 
   describe 'with_cipher' do
@@ -15,7 +15,7 @@ RSpec.describe ActiverecordEncryption do
 
       expect(described_class.cipher).to be_nil
 
-      ActiverecordEncryption.with_cipher(cipher) do
+      ActiveRecordEncryption.with_cipher(cipher) do
         expect(described_class.cipher).to eq(cipher)
       end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ActiverecordStubModel
+module ActiveRecordStubModel
   extend ActiveSupport::Concern
 
   class_methods do

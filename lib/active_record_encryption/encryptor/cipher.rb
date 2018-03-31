@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ActiverecordEncryption
+module ActiveRecordEncryption
   module Encryptor
     class Cipher
       def encrypt(value)

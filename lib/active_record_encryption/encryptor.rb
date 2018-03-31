@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-module ActiverecordEncryption
+module ActiveRecordEncryption
   module Encryptor
     class << self
-      def encrypt(value, cipher: ActiverecordEncryption.cipher)
+      def encrypt(value, cipher: ActiveRecordEncryption.cipher)
         raise_missing_cipher_error unless cipher
 
         string = value_to_string(value)
         cipher.encrypt(string)
       end
 
-      def decrypt(value, cipher: ActiverecordEncryption.cipher)
+      def decrypt(value, cipher: ActiveRecordEncryption.cipher)
         raise_missing_cipher_error unless cipher
         cipher.decrypt(value)
       end
@@ -18,11 +18,11 @@ module ActiverecordEncryption
       private
 
       def value_to_string(value)
-        ActiverecordEncryption::Quoter.instance.type_cast(value)
+        ActiveRecordEncryption::Quoter.instance.type_cast(value)
       end
 
       def raise_missing_cipher_error
-        raise(ActiverecordEncryption::MissingCipherError, 'missing cipher')
+        raise(ActiveRecordEncryption::MissingCipherError, 'missing cipher')
       end
     end
   end

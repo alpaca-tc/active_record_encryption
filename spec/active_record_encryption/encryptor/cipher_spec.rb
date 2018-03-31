@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ActiverecordEncryption::Encryptor::Cipher do
+RSpec.describe ActiveRecordEncryption::Encryptor::Cipher do
   let(:instance) do
     described_class.new
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ActiverecordEncryption
+module ActiveRecordEncryption
   module EncryptedAttribute
     extend ActiveSupport::Concern
 
@@ -16,7 +16,7 @@ module ActiverecordEncryption
 
       def decorate_encrypted_attribute(name)
         decorate_attribute_type(name, :encrypted) do |subtype|
-          ActiverecordEncryption::Type.new(name, subtype)
+          ActiveRecordEncryption::Type.new(name, subtype)
         end
       end
     end

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module ActiverecordEncryption
+module ActiveRecordEncryption
   class Type < ActiveRecord::Type::Value
-    using(ActiverecordEncryption::SerializerWithCast)
+    using(ActiveRecordEncryption::SerializerWithCast)
 
     delegate :type, :cast, to: :subtype
 
@@ -27,7 +27,7 @@ module ActiverecordEncryption
     attr_reader :name, :subtype, :binary
 
     def encryptor
-      ActiverecordEncryption::Encryptor
+      ActiveRecordEncryption::Encryptor
     end
   end
 end

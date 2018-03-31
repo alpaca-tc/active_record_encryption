@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ActiverecordEncryption::Type do
+RSpec.describe ActiveRecordEncryption::Type do
   describe '#type' do
     subject { instance.type }
     let(:instance) { described_class.new(:name, subtype_instance) }
@@ -47,7 +47,7 @@ RSpec.describe ActiverecordEncryption::Type do
     subject { instance.deserialize(value) }
 
     before do
-      ActiverecordEncryption.cipher = cipher
+      ActiveRecordEncryption.cipher = cipher
     end
 
     let(:instance) { described_class.new(:name, subtype_instance) }
@@ -58,7 +58,7 @@ RSpec.describe ActiverecordEncryption::Type do
       let(:subtype) { :integer }
 
       context 'given "1"' do
-        let(:value) { ActiverecordEncryption::Encryptor.encrypt('1') }
+        let(:value) { ActiveRecordEncryption::Encryptor.encrypt('1') }
         it { is_expected.to eq(1) }
       end
     end
@@ -68,7 +68,7 @@ RSpec.describe ActiverecordEncryption::Type do
     subject { instance.serialize(value) }
 
     before do
-      ActiverecordEncryption.cipher = build_cipher
+      ActiveRecordEncryption.cipher = build_cipher
     end
 
     let(:instance) { described_class.new(:name, subtype_instance) }

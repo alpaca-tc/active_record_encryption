@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ActiverecordEncryption::Quoter do
+RSpec.describe ActiveRecordEncryption::Quoter do
   describe '#type_cast' do
     subject { described_class.instance.type_cast(value) }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ActiverecordEncryption
+module ActiveRecordEncryption
   module SerializerWithCast
     # Unfortunately, current Rails doesn't serialize value from user input with `#cast`.
     # IMO, it is expected that serialized value from user input should be equal same result.

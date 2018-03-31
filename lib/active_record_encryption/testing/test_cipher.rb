@@ -2,9 +2,9 @@
 
 require 'digest'
 
-module ActiverecordEncryption
+module ActiveRecordEncryption
   module Testing
-    class TestCipher < ActiverecordEncryption::Encryptor::Cipher
+    class TestCipher < ActiveRecordEncryption::Encryptor::Cipher
       attr_reader :key
 
       def initialize(key: SecureRandom.hex)

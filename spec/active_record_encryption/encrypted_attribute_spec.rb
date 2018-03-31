@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-RSpec.describe ActiverecordEncryption::EncryptedAttribute do
+RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
   describe 'ClassMethod' do
     before do
-      ActiverecordEncryption.cipher = build_cipher
+      ActiveRecordEncryption.cipher = build_cipher
     end
 
     describe 'encryption' do
       stub_model('Post') do
         model do
-          include(ActiverecordEncryption::EncryptedAttribute)
+          include(ActiveRecordEncryption::EncryptedAttribute)
 
           encrypted_attribute(:string, :string)
           encrypted_attribute(:date, :date)
@@ -85,8 +85,8 @@ RSpec.describe ActiverecordEncryption::EncryptedAttribute do
             end
 
             it 'encrypts with specific cipher' do
-              ActiverecordEncryption.cipher = build_cipher
-              expect { find_instance.inspect }.to raise_error(ActiverecordEncryption::InvalidMessage)
+              ActiveRecordEncryption.cipher = build_cipher
+              expect { find_instance.inspect }.to raise_error(ActiveRecordEncryption::InvalidMessage)
             end
           end
         end
@@ -148,7 +148,7 @@ RSpec.describe ActiverecordEncryption::EncryptedAttribute do
     describe 'with default value' do
       stub_model('Post') do
         model do
-          include(ActiverecordEncryption::EncryptedAttribute)
+          include(ActiveRecordEncryption::EncryptedAttribute)
 
           encrypted_attribute(:simple, :string, default: 'default')
           encrypted_attribute(:proc, :string, default: -> { 'default' })

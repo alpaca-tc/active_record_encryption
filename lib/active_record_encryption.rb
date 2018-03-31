@@ -3,7 +3,7 @@
 require 'active_record'
 require 'active_support/core_ext/module/attribute_accessors_per_thread'
 
-module ActiverecordEncryption
+module ActiveRecordEncryption
   require 'active_record_encryption/version'
   require 'active_record_encryption/serializer_with_cast'
   require 'active_record_encryption/type'

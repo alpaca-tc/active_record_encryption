@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/alpaca-tc/active_record_encryption.png)](https://travis-ci.org/alpaca-tc/active_record_encryption)
 
-# ActiverecordEncryption
+# ActiveRecordEncryption
 
 Decorate encrypted binary column with attribute that transparently encrypt and decrypt sensitive data.
 It uses the ActiveRecord's Attribute API, and it is a simpler implementation than other gems.
@@ -21,7 +21,7 @@ Here is an example of passing a type of object you want:
 
 ```ruby
 class Post < ActiveRecord::Base
-  include ActiverecordEncryption::EncryptedAttribute
+  include ActiveRecordEncryption::EncryptedAttribute
 
   encrypted_attribute(:name, :string)
   encrypted_attribute(:published_on, :date)
