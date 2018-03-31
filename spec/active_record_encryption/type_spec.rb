@@ -82,7 +82,15 @@ RSpec.describe ActiveRecordEncryption::Type do
           instance.deserialize(instance.serialize(value))
         end
 
+        around do |example|
+          travel_to(Time.current) do
+            example.run
+          end
+        end
+
         it 'considers that time zone' do
+          now = Time.now
+
           local_time = Time.use_zone('Asia/Tokyo') do
             Time.current
           end
@@ -93,8 +101,8 @@ RSpec.describe ActiveRecordEncryption::Type do
 
           datetime_type = ActiveRecord::Type.lookup(:datetime)
 
-          expect(datetime_type.cast(serialize_and_deserialize(local_time))).to eq(local_time)
-          expect(datetime_type.cast(serialize_and_deserialize(gmt_time))).to eq(gmt_time)
+          expect(datetime_type.cast(serialize_and_deserialize(local_time))).to eq(now)
+          expect(datetime_type.cast(serialize_and_deserialize(gmt_time))).to eq(now)
         end
       end
     end
