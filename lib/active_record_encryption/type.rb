@@ -6,8 +6,9 @@ module ActiveRecordEncryption
 
     delegate :type, :cast, to: :subtype
 
-    def initialize(name, subtype)
-      @name = name
+    def initialize(subtype: ActiveRecord::Type.default_value, **options)
+      subtype = ActiveRecord::Type.lookup(subtype, **options) if subtype.is_a?(Symbol)
+
       @subtype = subtype
       @binary = ActiveRecord::Type.lookup(:binary)
     end
@@ -24,7 +25,7 @@ module ActiveRecordEncryption
 
     private
 
-    attr_reader :name, :subtype, :binary
+    attr_reader :subtype, :binary
 
     def encryptor
       ActiveRecordEncryption::Encryptor
