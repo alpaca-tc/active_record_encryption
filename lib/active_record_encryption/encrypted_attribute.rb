@@ -6,18 +6,7 @@ module ActiveRecordEncryption
 
     module ClassMethods
       def encrypted_attribute(name, subtype, **options)
-        name = name.to_s
-
-        attribute(name, subtype, **options)
-        decorate_encrypted_attribute(name)
-      end
-
-      private
-
-      def decorate_encrypted_attribute(name)
-        decorate_attribute_type(name, :encrypted) do |subtype|
-          ActiveRecordEncryption::Type.new(name, subtype)
-        end
+        attribute(name, :encryption, options.merge(subtype: subtype))
       end
     end
   end

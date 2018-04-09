@@ -23,3 +23,7 @@ module ActiveRecordEncryption
     self.cipher = previous
   end
 end
+
+ActiveSupport.on_load(:active_record) do
+  ActiveRecord::Type.register(:encryption, ActiveRecordEncryption::Type)
+end

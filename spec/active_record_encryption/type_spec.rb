@@ -3,16 +3,14 @@
 RSpec.describe ActiveRecordEncryption::Type do
   describe '#type' do
     subject { instance.type }
-    let(:instance) { described_class.new(:name, subtype_instance) }
-    let(:subtype_instance) { ActiveRecord::Type.lookup(:integer) }
-    it { is_expected.to eq(subtype_instance.type) }
+    let(:instance) { described_class.new(subtype: :integer) }
+    it { is_expected.to eq(:integer) }
   end
 
   describe '#cast' do
     subject { instance.cast(value) }
 
-    let(:instance) { described_class.new(:name, subtype_instance) }
-    let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
+    let(:instance) { described_class.new(subtype: subtype) }
 
     context 'when subtype is integer' do
       let(:subtype) { :integer }
@@ -50,8 +48,7 @@ RSpec.describe ActiveRecordEncryption::Type do
       ActiveRecordEncryption.cipher = cipher
     end
 
-    let(:instance) { described_class.new(:name, subtype_instance) }
-    let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
+    let(:instance) { described_class.new(subtype: subtype) }
     let(:cipher) { build_cipher }
 
     context 'when subtype is integer' do
@@ -71,7 +68,7 @@ RSpec.describe ActiveRecordEncryption::Type do
       ActiveRecordEncryption.cipher = build_cipher
     end
 
-    let(:instance) { described_class.new(:name, subtype_instance) }
+    let(:instance) { described_class.new(subtype: subtype_instance) }
     let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
 
     context 'when subtype is datetime' do
