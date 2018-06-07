@@ -12,6 +12,8 @@
 - Buildin some encryption
   - ActiveSupport
     - `encrypted_attribute(:field, :type, encryption: { encryptor: :active_support, key: ENV['KEY'], salt: ENV['SALT'] })`
+  - AES-256-CBC
+    - `encrypted_attribute(:field, :type, encryption: { encryptor: :aes_256_cbc, key: ENV['KEY'] })`
 
 ### Changes
 
