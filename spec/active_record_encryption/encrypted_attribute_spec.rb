@@ -3,7 +3,17 @@
 RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
   describe 'ClassMethod' do
     before do
-      ActiveRecordEncryption.cipher = build_cipher
+      mock_encryptor = Class.new(ActiveRecordEncryption::Encryptor::Raw) do
+        def encrypt(value)
+          super + 'mock'
+        end
+
+        def decrypt(value)
+          super.sub(/mock$/, '')
+        end
+      end
+
+      allow(ActiveRecordEncryption::Encryptor).to receive(:lookup).and_return(mock_encryptor.new)
     end
 
     describe 'encryption' do
@@ -82,11 +92,6 @@ RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
               expect(in_database).to_not eq(expected)
               expect(in_database).to_not eq(value)
               expect(in_database).to_not be_nil
-            end
-
-            it 'encrypts with specific cipher' do
-              ActiveRecordEncryption.cipher = build_cipher
-              expect { find_instance.inspect }.to raise_error(ActiveRecordEncryption::InvalidMessage)
             end
           end
         end

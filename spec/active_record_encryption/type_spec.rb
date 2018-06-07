@@ -44,18 +44,13 @@ RSpec.describe ActiveRecordEncryption::Type do
   describe '#deserialize' do
     subject { instance.deserialize(value) }
 
-    before do
-      ActiveRecordEncryption.cipher = cipher
-    end
-
     let(:instance) { described_class.new(subtype: subtype) }
-    let(:cipher) { build_cipher }
 
     context 'when subtype is integer' do
       let(:subtype) { :integer }
 
       context 'given "1"' do
-        let(:value) { ActiveRecordEncryption::Encryptor.encrypt('1') }
+        let(:value) { '1' }
         it { is_expected.to eq(1) }
       end
     end
@@ -63,10 +58,6 @@ RSpec.describe ActiveRecordEncryption::Type do
 
   describe '#serialize' do
     subject { instance.serialize(value) }
-
-    before do
-      ActiveRecordEncryption.cipher = build_cipher
-    end
 
     let(:instance) { described_class.new(subtype: subtype_instance) }
     let(:subtype_instance) { ActiveRecord::Type.lookup(subtype) }
