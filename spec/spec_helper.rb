@@ -3,6 +3,7 @@
 require 'bundler/setup'
 require 'pry'
 require 'active_record_encryption'
+require 'minitest'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
@@ -14,6 +15,8 @@ RSpec.configure do |config|
   config.disable_monkey_patching!
 
   config.filter_run_when_matching :focus
+
+  config.expect_with :minitest
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
