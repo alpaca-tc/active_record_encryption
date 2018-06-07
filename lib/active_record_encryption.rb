@@ -11,6 +11,7 @@ module ActiveRecordEncryption
   require 'active_record_encryption/encrypted_attribute'
   require 'active_record_encryption/quoter'
   require 'active_record_encryption/exceptions'
+  require 'active_record_encryption/binary'
 
   mattr_accessor(:default_encryption, instance_accessor: false) do
     { encryptor: :raw }
