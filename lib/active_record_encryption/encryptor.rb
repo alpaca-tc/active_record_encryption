@@ -3,6 +3,7 @@
 require 'active_record_encryption/encryptor/registry'
 require 'active_record_encryption/encryptor/base'
 require 'active_record_encryption/encryptor/raw'
+require 'active_record_encryption/encryptor/active_support'
 
 module ActiveRecordEncryption
   module Encryptor
@@ -22,5 +23,6 @@ module ActiveRecordEncryption
     end
 
     register(:raw, ActiveRecordEncryption::Encryptor::Raw)
+    register(:active_support, ActiveRecordEncryption::Encryptor::ActiveSupport)
   end
 end
