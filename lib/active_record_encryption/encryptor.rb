@@ -2,6 +2,7 @@
 
 require 'active_record_encryption/encryptor/registry'
 require 'active_record_encryption/encryptor/base'
+require 'active_record_encryption/encryptor/raw'
 
 module ActiveRecordEncryption
   module Encryptor
@@ -19,5 +20,7 @@ module ActiveRecordEncryption
         registry.lookup(*args, **kwargs)
       end
     end
+
+    register(:raw, ActiveRecordEncryption::Encryptor::Raw)
   end
 end
