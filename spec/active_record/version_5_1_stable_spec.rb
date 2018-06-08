@@ -16,6 +16,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
       # Stub connection
       allow(ActiveRecord::Base).to receive(:connection).and_return(Sqlite3Adapter.connection)
+      stub_const('ActiveRecord::SQLCounter', SQLCounter)
     end
 
     # :%s!^    def\s*\(.*\)!test '\1' do!g
@@ -370,7 +371,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       end
     end
 
-    example 'test_changed_attributes_should_be_preserved_if_save_failure' do
+    example 'test_changed_attributes_should_be_preserved_if_save_failure', skip: 'Pirate has no association' do
       pirate = Pirate.new
       pirate.parrot_id = 1
       assert !pirate.save
@@ -588,7 +589,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       ActiveRecord::Base.clear_cache!
     end
 
-    example 'test_datetime_attribute_can_be_updated_with_fractional_seconds' do
+    example 'test_datetime_attribute_can_be_updated_with_fractional_seconds', skip: 'reson: #subsecond_precision_supported is not supported' do
       skip 'Fractional seconds are not supported' unless subsecond_precision_supported?
       in_time_zone 'Paris' do
         target = Class.new(ActiveRecord::Base)
@@ -611,7 +612,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       assert !pirate.created_on_changed?
     end
 
-    example 'partial insert' do
+    example 'partial insert', skip: 'reason: default values are defined as `user provided` instead of `from database`' do
       with_partial_writes Person do
         jon = nil
         assert_sql(/first_name/i) do
