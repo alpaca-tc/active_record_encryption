@@ -123,7 +123,7 @@ class SQLCounter
 
     sql = values[:sql]
     self.class.log_all << sql
-    self.class.log << sql unless ignore.match?(sql)
+    self.class.log << sql unless ignore =~ sql
   end
 end
 

@@ -478,93 +478,95 @@ RSpec.describe 'ActiveRecord::Version50Stable' do
     end
 
     example 'test_previous_changes' do
-      # original values should be in previous_changes
-      pirate = Pirate.new
+      begin
+        # original values should be in previous_changes
+        pirate = Pirate.new
 
-      assert_equal({}, pirate.previous_changes)
-      pirate.catchphrase = 'arrr'
-      pirate.save!
+        assert_equal({}, pirate.previous_changes)
+        pirate.catchphrase = 'arrr'
+        pirate.save!
 
-      assert_equal 4, pirate.previous_changes.size
-      assert_equal [nil, 'arrr'], pirate.previous_changes['catchphrase']
-      assert_equal [nil, pirate.id], pirate.previous_changes['id']
-      assert_nil pirate.previous_changes['updated_on'][0]
-      assert_not_nil pirate.previous_changes['updated_on'][1]
-      assert_nil pirate.previous_changes['created_on'][0]
-      assert_not_nil pirate.previous_changes['created_on'][1]
-      assert !pirate.previous_changes.key?('parrot_id')
+        assert_equal 4, pirate.previous_changes.size
+        assert_equal [nil, 'arrr'], pirate.previous_changes['catchphrase']
+        assert_equal [nil, pirate.id], pirate.previous_changes['id']
+        assert_nil pirate.previous_changes['updated_on'][0]
+        assert_not_nil pirate.previous_changes['updated_on'][1]
+        assert_nil pirate.previous_changes['created_on'][0]
+        assert_not_nil pirate.previous_changes['created_on'][1]
+        assert !pirate.previous_changes.key?('parrot_id')
 
-      # original values should be in previous_changes
-      pirate = Pirate.new
+        # original values should be in previous_changes
+        pirate = Pirate.new
 
-      assert_equal({}, pirate.previous_changes)
-      pirate.catchphrase = 'arrr'
-      pirate.save
+        assert_equal({}, pirate.previous_changes)
+        pirate.catchphrase = 'arrr'
+        pirate.save
 
-      assert_equal 4, pirate.previous_changes.size
-      assert_equal [nil, 'arrr'], pirate.previous_changes['catchphrase']
-      assert_equal [nil, pirate.id], pirate.previous_changes['id']
-      assert pirate.previous_changes.include?('updated_on')
-      assert pirate.previous_changes.include?('created_on')
-      assert !pirate.previous_changes.key?('parrot_id')
+        assert_equal 4, pirate.previous_changes.size
+        assert_equal [nil, 'arrr'], pirate.previous_changes['catchphrase']
+        assert_equal [nil, pirate.id], pirate.previous_changes['id']
+        assert pirate.previous_changes.include?('updated_on')
+        assert pirate.previous_changes.include?('created_on')
+        assert !pirate.previous_changes.key?('parrot_id')
 
-      pirate.catchphrase = 'Yar!!'
-      pirate.reload
-      assert_equal({}, pirate.previous_changes)
+        pirate.catchphrase = 'Yar!!'
+        pirate.reload
+        assert_equal({}, pirate.previous_changes)
 
-      pirate = Pirate.find_by_catchphrase('arrr')
+        pirate = Pirate.find_by_catchphrase('arrr')
 
-      travel(1.second)
+        travel(1.second)
 
-      pirate.catchphrase = 'Me Maties!'
-      pirate.save!
+        pirate.catchphrase = 'Me Maties!'
+        pirate.save!
 
-      assert_equal 2, pirate.previous_changes.size
-      assert_equal ['arrr', 'Me Maties!'], pirate.previous_changes['catchphrase']
-      assert_not_nil pirate.previous_changes['updated_on'][0]
-      assert_not_nil pirate.previous_changes['updated_on'][1]
-      assert !pirate.previous_changes.key?('parrot_id')
-      assert !pirate.previous_changes.key?('created_on')
+        assert_equal 2, pirate.previous_changes.size
+        assert_equal ['arrr', 'Me Maties!'], pirate.previous_changes['catchphrase']
+        assert_not_nil pirate.previous_changes['updated_on'][0]
+        assert_not_nil pirate.previous_changes['updated_on'][1]
+        assert !pirate.previous_changes.key?('parrot_id')
+        assert !pirate.previous_changes.key?('created_on')
 
-      pirate = Pirate.find_by_catchphrase('Me Maties!')
+        pirate = Pirate.find_by_catchphrase('Me Maties!')
 
-      travel(1.second)
+        travel(1.second)
 
-      pirate.catchphrase = 'Thar She Blows!'
-      pirate.save
+        pirate.catchphrase = 'Thar She Blows!'
+        pirate.save
 
-      assert_equal 2, pirate.previous_changes.size
-      assert_equal ['Me Maties!', 'Thar She Blows!'], pirate.previous_changes['catchphrase']
-      assert_not_nil pirate.previous_changes['updated_on'][0]
-      assert_not_nil pirate.previous_changes['updated_on'][1]
-      assert !pirate.previous_changes.key?('parrot_id')
-      assert !pirate.previous_changes.key?('created_on')
+        assert_equal 2, pirate.previous_changes.size
+        assert_equal ['Me Maties!', 'Thar She Blows!'], pirate.previous_changes['catchphrase']
+        assert_not_nil pirate.previous_changes['updated_on'][0]
+        assert_not_nil pirate.previous_changes['updated_on'][1]
+        assert !pirate.previous_changes.key?('parrot_id')
+        assert !pirate.previous_changes.key?('created_on')
 
-      travel(1.second)
+        travel(1.second)
 
-      pirate = Pirate.find_by_catchphrase('Thar She Blows!')
-      pirate.update(catchphrase: 'Ahoy!')
+        pirate = Pirate.find_by_catchphrase('Thar She Blows!')
+        pirate.update(catchphrase: 'Ahoy!')
 
-      assert_equal 2, pirate.previous_changes.size
-      assert_equal ['Thar She Blows!', 'Ahoy!'], pirate.previous_changes['catchphrase']
-      assert_not_nil pirate.previous_changes['updated_on'][0]
-      assert_not_nil pirate.previous_changes['updated_on'][1]
-      assert !pirate.previous_changes.key?('parrot_id')
-      assert !pirate.previous_changes.key?('created_on')
+        assert_equal 2, pirate.previous_changes.size
+        assert_equal ['Thar She Blows!', 'Ahoy!'], pirate.previous_changes['catchphrase']
+        assert_not_nil pirate.previous_changes['updated_on'][0]
+        assert_not_nil pirate.previous_changes['updated_on'][1]
+        assert !pirate.previous_changes.key?('parrot_id')
+        assert !pirate.previous_changes.key?('created_on')
 
-      travel(1.second)
+        travel(1.second)
 
-      pirate = Pirate.find_by_catchphrase('Ahoy!')
-      pirate.update_attribute(:catchphrase, 'Ninjas suck!')
+        pirate = Pirate.find_by_catchphrase('Ahoy!')
+        pirate.update_attribute(:catchphrase, 'Ninjas suck!')
 
-      assert_equal 2, pirate.previous_changes.size
-      assert_equal ['Ahoy!', 'Ninjas suck!'], pirate.previous_changes['catchphrase']
-      assert_not_nil pirate.previous_changes['updated_on'][0]
-      assert_not_nil pirate.previous_changes['updated_on'][1]
-      assert !pirate.previous_changes.key?('parrot_id')
-      assert !pirate.previous_changes.key?('created_on')
-    ensure
-      travel_back
+        assert_equal 2, pirate.previous_changes.size
+        assert_equal ['Ahoy!', 'Ninjas suck!'], pirate.previous_changes['catchphrase']
+        assert_not_nil pirate.previous_changes['updated_on'][0]
+        assert_not_nil pirate.previous_changes['updated_on'][1]
+        assert !pirate.previous_changes.key?('parrot_id')
+        assert !pirate.previous_changes.key?('created_on')
+      ensure
+        travel_back
+      end
     end
 
     if ActiveRecord::Base.connection.supports_migrations?
@@ -578,10 +580,10 @@ RSpec.describe 'ActiveRecord::Version50Stable' do
         end
       ensure
         begin
-        ActiveRecord::Base.connection.drop_table :testings
-      rescue StandardError
-        nil
-      end
+          ActiveRecord::Base.connection.drop_table :testings
+        rescue StandardError
+          nil
+        end
       end
     end
 
