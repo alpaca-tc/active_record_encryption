@@ -16,9 +16,10 @@ RSpec.configure do |config|
 
   config.filter_run_when_matching :focus
 
-  config.expect_with :minitest
-
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  # For minitest
+  config.expect_with :minitest
 end
