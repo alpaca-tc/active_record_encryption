@@ -5,6 +5,7 @@ module ActiveRecordEncryption
     using(ActiveRecordEncryption::SerializerWithCast)
 
     delegate :type, :cast, :changed_in_place?, to: :subtype
+    delegate :user_input_in_time_zone, to: :subtype # for ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
 
     def initialize(subtype: ActiveRecord::Type.default_value, **options)
       # Lookup encryptor from options[:encryption]
