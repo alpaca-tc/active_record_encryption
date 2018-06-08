@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable all
 RSpec.describe 'ActiveRecord::Version51Stable' do
   # 198bc1f785a7b826dfd50ccb068fdcbe463b34f6
   # Copy from rails/rails - activerecord/test/cases/dirty_test.rb
@@ -13,6 +14,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
     # Dummy to force column loads so query counts are clean.
     before do
       Person.create(first_name: 'foo')
+      SQLCounter.clear_log
 
       # Stub connection
       allow(ActiveRecord::Base).to receive(:connection).and_return(Sqlite3Adapter.connection)
@@ -45,7 +47,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       assert_nil pirate.catchphrase_change
     end
 
-    example 'test_time_attributes_changes_with_time_zone' do
+    example 'test_time_attributes_changes_with_time_zone', skip: 'reason: user defined attribute. This test expected Time attribute instead of Binary attribute' do
       in_time_zone 'Paris' do
         target = Class.new(ActiveRecord::Base)
         target.table_name = 'pirates'
@@ -83,7 +85,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       end
     end
 
-    example 'test_time_attributes_changes_without_time_zone_by_skip' do
+    example 'test_time_attributes_changes_without_time_zone_by_skip', skip: 'reason: user defined attribute. This test expected Time attribute instead of Binary attribute' do
       in_time_zone 'Paris' do
         target = Class.new(ActiveRecord::Base)
         target.table_name = 'pirates'
@@ -112,7 +114,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       end
     end
 
-    example 'test_time_attributes_changes_without_time_zone' do
+    example 'test_time_attributes_changes_without_time_zone', skip: 'reason: user defined attribute. This test expected Time attribute instead of Binary attribute' do
       with_timezone_config aware_attributes: false do
         target = Class.new(ActiveRecord::Base)
         target.table_name = 'pirates'
@@ -194,7 +196,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
     example 'test_nullable_datetime_not_marked_as_changed_if_new_value_is_blank' do
       in_time_zone 'Edinburgh' do
-        target = Class.new(ActiveRecord::Base)
+        target = Class.new(Topic)
         target.table_name = 'topics'
 
         topic = target.create
@@ -314,14 +316,14 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       end
     end
 
-    example 'test_association_assignment_changes_foreign_key' do
+    example 'test_association_assignment_changes_foreign_key', skip: 'Pirate has no association' do
       pirate = Pirate.create!(catchphrase: 'jarl')
       pirate.parrot = Parrot.create!(name: 'Lorre')
       assert pirate.changed?
       assert_equal %w[parrot_id], pirate.changed
     end
 
-    example 'test_attribute_should_be_compared_with_type_cast' do
+    example 'test_attribute_should_be_compared_with_type_cast', skip: 'reason: default values are defined as `user provided` instead of `from database`' do
       topic = Topic.new
       assert topic.approved?
       assert !topic.approved_changed?
@@ -844,3 +846,4 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
     end
   end
 end
+# rubocop:enable all
