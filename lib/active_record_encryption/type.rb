@@ -4,7 +4,7 @@ module ActiveRecordEncryption
   class Type < ActiveRecord::Type::Value
     using(ActiveRecordEncryption::SerializerWithCast)
 
-    delegate :type, :cast, :changed_in_place?, to: :subtype
+    delegate :type, :cast, to: :subtype
     delegate :user_input_in_time_zone, to: :subtype # for ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
 
     def initialize(subtype: ActiveRecord::Type.default_value, **options)
@@ -26,6 +26,11 @@ module ActiveRecordEncryption
     def serialize(value)
       serialized = subtype.serialize(value)
       binary.serialize(encryptor.encrypt(serialized)) unless serialized.nil?
+    end
+
+    def changed_in_place?(raw_old_value, value)
+      old_value = deserialize(raw_old_value)
+      @subtype.changed_in_place?(old_value, value)
     end
 
     private
