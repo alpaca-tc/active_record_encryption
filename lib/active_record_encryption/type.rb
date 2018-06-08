@@ -4,7 +4,7 @@ module ActiveRecordEncryption
   class Type < ActiveRecord::Type::Value
     using(ActiveRecordEncryption::SerializerWithCast)
 
-    delegate :type, :cast, to: :subtype
+    delegate :type, :cast, :changed_in_place?, to: :subtype
 
     def initialize(subtype: ActiveRecord::Type.default_value, **options)
       # Lookup encryptor from options[:encryption]
