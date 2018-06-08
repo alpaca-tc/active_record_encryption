@@ -69,6 +69,8 @@ RSpec.shared_context 'with activerecord model' do
       encrypted_attribute(:group, :string)
       encrypted_attribute(:created_at, :datetime)
       encrypted_attribute(:updated_at, :datetime)
+
+      serialize :content
     end
 
     table do |t|
@@ -118,6 +120,8 @@ RSpec.shared_context 'with activerecord model' do
       encrypted_attribute(:created_on, :datetime)
       encrypted_attribute(:updated_at, :datetime)
       encrypted_attribute(:updated_on, :datetime)
+
+      alias_attribute :title, :name
     end
 
     table do |t|

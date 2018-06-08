@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'active_support/test_case'
+require 'active_support/testing/deprecation'
 
 # FIXME: I think that this way is not best.
 module ActiveSupportTestCaseCompatible
@@ -27,5 +28,6 @@ module ActiveSupportTestCaseCompatible
   RSpec.configure do |config|
     config.include(self)
     config.include(ActiveSupport::Testing::Assertions)
+    config.include(ActiveSupport::Testing::Deprecation)
   end
 end

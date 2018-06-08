@@ -26,6 +26,12 @@ module ActiveRecordAssertion
     before do
       SQLCounter.clear_log
     end
+
+    around do |example|
+      Sqlite3Adapter.transaction do
+        example.run
+      end
+    end
   end
 
   def create_fixtures(*fixture_set_names, &block)
