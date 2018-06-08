@@ -13,6 +13,11 @@
   - ActiveSupport
     - `encrypted_attribute(:field, :type, encryption: { encryptor: :active_support, key: ENV['KEY'], salt: ENV['SALT'] })`
 
+### Bug fixes
+
+- `ActiveRecordEncryption::Type#change_in_place?` Compare old value with new value.
+- `ActiveRecordEncryption::Type#cast` supports TimeWithZone
+
 ### Changes
 
 - Remove `ActiveRecordEncryption.with_cipher`
