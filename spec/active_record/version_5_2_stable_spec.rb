@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # rubocop:disable all
-RSpec.describe 'ActiveRecord::Version51Stable' do
-  next unless Gem::Version.create('5.1') <= ActiveRecord.gem_version && ActiveRecord.gem_version < Gem::Version.create('5.2')
+RSpec.describe 'ActiveRecord::Version52Stable' do
+  next unless Gem::Version.create('5.2') <= ActiveRecord.gem_version && ActiveRecord.gem_version < Gem::Version.create('5.3')
 
   # 198bc1f785a7b826dfd50ccb068fdcbe463b34f6
   # Copy from rails/rails - activerecord/test/cases/dirty_test.rb
@@ -34,18 +34,18 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
       # Change catchphrase.
       pirate.catchphrase = 'arrr'
-      assert pirate.catchphrase_changed?
+      assert_predicate pirate, :catchphrase_changed?
       assert_nil pirate.catchphrase_was
       assert_equal [nil, 'arrr'], pirate.catchphrase_change
 
       # Saved - no changes.
       pirate.save!
-      assert !pirate.catchphrase_changed?
+      assert_not_predicate pirate, :catchphrase_changed?
       assert_nil pirate.catchphrase_change
 
       # Same value - no changes.
       pirate.catchphrase = 'arrr'
-      assert !pirate.catchphrase_changed?
+      assert_not_predicate pirate, :catchphrase_changed?
       assert_nil pirate.catchphrase_change
     end
 
@@ -56,23 +56,23 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
         # New record - no changes.
         pirate = target.new
-        assert !pirate.created_on_changed?
+        assert_not_predicate pirate, :created_on_changed?
         assert_nil pirate.created_on_change
 
         # Saved - no changes.
         pirate.catchphrase = 'arrrr, time zone!!'
         pirate.save!
-        assert !pirate.created_on_changed?
+        assert_not_predicate pirate, :created_on_changed?
         assert_nil pirate.created_on_change
 
         # Change created_on.
         old_created_on = pirate.created_on
         pirate.created_on = Time.now - 1.day
-        assert pirate.created_on_changed?
+        assert_predicate pirate, :created_on_changed?
         assert_kind_of ActiveSupport::TimeWithZone, pirate.created_on_was
         assert_equal old_created_on, pirate.created_on_was
         pirate.created_on = old_created_on
-        assert !pirate.created_on_changed?
+        assert_not_predicate pirate, :created_on_changed?
       end
     end
 
@@ -83,7 +83,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
         pirate = target.create!
         pirate.created_on = pirate.created_on
-        assert !pirate.created_on_changed?
+        assert_not_predicate pirate, :created_on_changed?
       end
     end
 
@@ -96,19 +96,19 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
         # New record - no changes.
         pirate = target.new
-        assert !pirate.created_on_changed?
+        assert_not_predicate pirate, :created_on_changed?
         assert_nil pirate.created_on_change
 
         # Saved - no changes.
         pirate.catchphrase = 'arrrr, time zone!!'
         pirate.save!
-        assert !pirate.created_on_changed?
+        assert_not_predicate pirate, :created_on_changed?
         assert_nil pirate.created_on_change
 
         # Change created_on.
         old_created_on = pirate.created_on
         pirate.created_on = Time.now + 1.day
-        assert pirate.created_on_changed?
+        assert_predicate pirate, :created_on_changed?
         # kind_of does not work because
         # ActiveSupport::TimeWithZone.name == 'Time'
         assert_instance_of Time, pirate.created_on_was
@@ -123,19 +123,19 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
         # New record - no changes.
         pirate = target.new
-        assert !pirate.created_on_changed?
+        assert_not_predicate pirate, :created_on_changed?
         assert_nil pirate.created_on_change
 
         # Saved - no changes.
         pirate.catchphrase = 'arrrr, time zone!!'
         pirate.save!
-        assert !pirate.created_on_changed?
+        assert_not_predicate pirate, :created_on_changed?
         assert_nil pirate.created_on_change
 
         # Change created_on.
         old_created_on = pirate.created_on
         pirate.created_on = Time.now + 1.day
-        assert pirate.created_on_changed?
+        assert_predicate pirate, :created_on_changed?
         # kind_of does not work because
         # ActiveSupport::TimeWithZone.name == 'Time'
         assert_instance_of Time, pirate.created_on_was
@@ -147,11 +147,11 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       # the actual attribute here is name, title is an
       # alias setup via alias_attribute
       parrot = Parrot.new
-      assert !parrot.title_changed?
+      assert_not_predicate parrot, :title_changed?
       assert_nil parrot.title_change
 
       parrot.name = 'Sam'
-      assert parrot.title_changed?
+      assert_predicate parrot, :title_changed?
       assert_nil parrot.title_was
       assert_equal parrot.name_change, parrot.title_change
     end
@@ -163,7 +163,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       pirate.restore_catchphrase!
       assert_equal 'Yar!', pirate.catchphrase
       assert_equal({}, pirate.changes)
-      assert !pirate.catchphrase_changed?
+      assert_not_predicate pirate, :catchphrase_changed?
     end
 
     example 'test_nullable_number_not_marked_as_changed_if_new_value_is_blank' do
@@ -171,7 +171,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
       ['', nil].each do |value|
         pirate.parrot_id = value
-        assert !pirate.parrot_id_changed?
+        assert_not_predicate pirate, :parrot_id_changed?
         assert_nil pirate.parrot_id_change
       end
     end
@@ -181,7 +181,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
       ['', nil].each do |value|
         numeric_data.bank_balance = value
-        assert !numeric_data.bank_balance_changed?
+        assert_not_predicate numeric_data, :bank_balance_changed?
         assert_nil numeric_data.bank_balance_change
       end
     end
@@ -191,7 +191,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
       ['', nil].each do |value|
         numeric_data.temperature = value
-        assert !numeric_data.temperature_changed?
+        assert_not_predicate numeric_data, :temperature_changed?
         assert_nil numeric_data.temperature_change
       end
     end
@@ -207,7 +207,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
         ['', nil].each do |value|
           topic.written_on = value
           assert_nil topic.written_on
-          assert !topic.written_on_changed?
+          assert_not_predicate topic, :written_on_changed?
         end
       end
     end
@@ -218,10 +218,10 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       pirate.catchphrase = 'arrr'
       assert pirate.save!
 
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
 
       pirate.parrot_id = '0'
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
     end
 
     example 'test_integer_zero_to_integer_zero_not_marked_as_changed' do
@@ -230,17 +230,17 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       pirate.catchphrase = 'arrr'
       assert pirate.save!
 
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
 
       pirate.parrot_id = 0
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
     end
 
     example 'test_float_zero_to_string_zero_not_marked_as_changed' do
       data = NumericData.new temperature: 0.0
       data.save!
 
-      assert_not data.changed?
+      assert_not_predicate data, :changed?
 
       data.temperature = '0'
       assert_empty data.changes
@@ -261,38 +261,38 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       # check the change from 1 to ''
       pirate = Pirate.find_by_catchphrase('Yarrrr, me hearties')
       pirate.parrot_id = ''
-      assert pirate.parrot_id_changed?
+      assert_predicate pirate, :parrot_id_changed?
       assert_equal([1, nil], pirate.parrot_id_change)
       pirate.save
 
       # check the change from nil to 0
       pirate = Pirate.find_by_catchphrase('Yarrrr, me hearties')
       pirate.parrot_id = 0
-      assert pirate.parrot_id_changed?
+      assert_predicate pirate, :parrot_id_changed?
       assert_equal([nil, 0], pirate.parrot_id_change)
       pirate.save
 
       # check the change from 0 to ''
       pirate = Pirate.find_by_catchphrase('Yarrrr, me hearties')
       pirate.parrot_id = ''
-      assert pirate.parrot_id_changed?
+      assert_predicate pirate, :parrot_id_changed?
       assert_equal([0, nil], pirate.parrot_id_change)
     end
 
     example 'test_object_should_be_changed_if_any_attribute_is_changed' do
       pirate = Pirate.new
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
       assert_equal [], pirate.changed
       assert_equal({}, pirate.changes)
 
       pirate.catchphrase = 'arrr'
-      assert pirate.changed?
+      assert_predicate pirate, :changed?
       assert_nil pirate.catchphrase_was
       assert_equal %w[catchphrase], pirate.changed
       assert_equal({ 'catchphrase' => [nil, 'arrr'] }, pirate.changes)
 
       pirate.save
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
       assert_equal [], pirate.changed
       assert_equal({}, pirate.changes)
     end
@@ -300,42 +300,40 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
     example 'test_attribute_will_change!' do
       pirate = Pirate.create!(catchphrase: 'arr')
 
-      assert !pirate.catchphrase_changed?
+      assert_not_predicate pirate, :catchphrase_changed?
       assert pirate.catchphrase_will_change!
-      assert pirate.catchphrase_changed?
+      assert_predicate pirate, :catchphrase_changed?
       assert_equal %w[arr arr], pirate.catchphrase_change
 
       pirate.catchphrase << ' matey!'
-      assert pirate.catchphrase_changed?
+      assert_predicate pirate, :catchphrase_changed?
       assert_equal ['arr', 'arr matey!'], pirate.catchphrase_change
     end
 
     example 'test_virtual_attribute_will_change' do
-      assert_deprecated do
-        parrot = Parrot.create!(name: 'Ruby')
-        parrot.send(:attribute_will_change!, :cancel_save_from_callback)
-        assert parrot.has_changes_to_save?
-      end
+      parrot = Parrot.create!(name: 'Ruby')
+      parrot.send(:attribute_will_change!, :cancel_save_from_callback)
+      assert_predicate parrot, :has_changes_to_save?
     end
 
     example 'test_association_assignment_changes_foreign_key' do
       pirate = Pirate.create!(catchphrase: 'jarl')
       pirate.parrot = Parrot.create!(name: 'Lorre')
-      assert pirate.changed?
+      assert_predicate pirate, :changed?
       assert_equal %w[parrot_id], pirate.changed
     end
 
     example 'test_attribute_should_be_compared_with_type_cast' do
       topic = Topic.new
-      assert topic.approved?
-      assert !topic.approved_changed?
+      assert_predicate topic, :approved?
+      assert_not_predicate topic, :approved_changed?
 
       # Coming from web form.
       params = { topic: { approved: 1 } }
       # In the controller.
       topic.attributes = params[:topic]
-      assert topic.approved?
-      assert !topic.approved_changed?
+      assert_predicate topic, :approved?
+      assert_not_predicate topic, :approved_changed?
     end
 
     example 'test_partial_update' do
@@ -390,9 +388,9 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
     example 'test_reload_should_clear_changed_attributes' do
       pirate = Pirate.create!(catchphrase: 'shiver me timbers')
       pirate.catchphrase = '*hic*'
-      assert pirate.changed?
+      assert_predicate pirate, :changed?
       pirate.reload
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
     end
 
     example 'test_dup_objects_should_not_copy_dirty_flag_from_creator' do
@@ -400,17 +398,17 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       pirate_dup = pirate.dup
       pirate_dup.restore_catchphrase!
       pirate.catchphrase = 'I love Rum'
-      assert pirate.catchphrase_changed?
-      assert !pirate_dup.catchphrase_changed?
+      assert_predicate pirate, :catchphrase_changed?
+      assert_not_predicate pirate_dup, :catchphrase_changed?
     end
 
     example 'test_reverted_changes_are_not_dirty' do
       phrase = 'shiver me timbers'
       pirate = Pirate.create!(catchphrase: phrase)
       pirate.catchphrase = '*hic*'
-      assert pirate.changed?
+      assert_predicate pirate, :changed?
       pirate.catchphrase = phrase
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
     end
 
     example 'test_reverted_changes_are_not_dirty_after_multiple_changes' do
@@ -418,40 +416,40 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       pirate = Pirate.create!(catchphrase: phrase)
       10.times do |i|
         pirate.catchphrase = '*hic*' * i
-        assert pirate.changed?
+        assert_predicate pirate, :changed?
       end
-      assert pirate.changed?
+      assert_predicate pirate, :changed?
       pirate.catchphrase = phrase
-      assert !pirate.changed?
+      assert_not_predicate pirate, :changed?
     end
 
     example 'test_reverted_changes_are_not_dirty_going_from_nil_to_value_and_back' do
       pirate = Pirate.create!(catchphrase: 'Yar!')
 
       pirate.parrot_id = 1
-      assert pirate.changed?
-      assert pirate.parrot_id_changed?
-      assert !pirate.catchphrase_changed?
+      assert_predicate pirate, :changed?
+      assert_predicate pirate, :parrot_id_changed?
+      assert_not_predicate pirate, :catchphrase_changed?
 
       pirate.parrot_id = nil
-      assert !pirate.changed?
-      assert !pirate.parrot_id_changed?
-      assert !pirate.catchphrase_changed?
+      assert_not_predicate pirate, :changed?
+      assert_not_predicate pirate, :parrot_id_changed?
+      assert_not_predicate pirate, :catchphrase_changed?
     end
 
     example 'test_save_should_store_serialized_attributes_even_with_partial_writes' do
       with_partial_writes(Topic) do
         topic = Topic.create!(content: { a: 'a' })
 
-        assert_not topic.changed?
+        assert_not_predicate topic, :changed?
 
         topic.content[:b] = 'b'
 
-        assert topic.changed?
+        assert_predicate topic, :changed?
 
         topic.save!
 
-        assert_not topic.changed?
+        assert_not_predicate topic, :changed?
         assert_equal 'b', topic.content[:b]
 
         topic.reload
@@ -478,12 +476,19 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
     example 'test_save_should_not_save_serialized_attribute_with_partial_writes_if_not_present' do
       with_partial_writes(Topic) do
-        Topic.create!(author_name: 'Bill', content: { a: 'a' })
-        topic = Topic.select('id, author_name').first
+        topic = Topic.create!(author_name: 'Bill', content: { a: 'a' })
+        topic = Topic.select('id, author_name').find(topic.id)
         topic.update_columns author_name: 'John'
-        topic = Topic.first
-        assert_not_nil topic.content
+        assert_not_nil topic.reload.content
       end
+    end
+
+    example 'test_changes_to_save_should_not_mutate_array_of_hashes' do
+      topic = Topic.new(author_name: 'Bill', content: [{ a: 'a' }])
+
+      topic.changes_to_save
+
+      assert_equal [{ a: 'a' }], topic.content
     end
 
     example 'test_previous_changes' do
@@ -577,10 +582,12 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
     end
 
     class Testings < ActiveRecord::Base; end
+
     example 'test_field_named_field' do
       ActiveRecord::Base.connection.create_table :testings do |t|
         t.string :field
       end
+
       assert_nothing_raised do
         Testings.new.attributes
       end
@@ -590,10 +597,12 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       rescue StandardError
         nil
       end
+
       ActiveRecord::Base.clear_cache!
     end
 
     example 'test_datetime_attribute_can_be_updated_with_fractional_seconds' do
+      skip 'Fractional seconds are not supported' unless subsecond_precision_supported?
       in_time_zone 'Paris' do
         target = Class.new(ActiveRecord::Base)
         target.table_name = 'topics'
@@ -612,7 +621,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       pirate = Pirate.create!(catchphrase: 'rrrr', created_on: time_in_paris)
 
       pirate.created_on = pirate.created_on.in_time_zone('Tokyo').to_s
-      assert !pirate.created_on_changed?
+      assert_not_predicate pirate, :created_on_changed?
     end
 
     example 'partial insert' do
@@ -643,7 +652,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       pirate = Pirate.create!(catchphrase: 'arrrr')
       pirate.catchphrase << ' matey!'
 
-      assert pirate.catchphrase_changed?
+      assert_predicate pirate, :catchphrase_changed?
       expected_changes = {
         'catchphrase' => ['arrrr', 'arrrr matey!']
       }
@@ -657,7 +666,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       pirate.reload
 
       assert_equal 'arrrr matey!', pirate.catchphrase
-      assert_not pirate.changed?
+      assert_not_predicate pirate, :changed?
     end
 
     example 'in place mutation for binary' do
@@ -668,19 +677,60 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
       binary = klass.create!(data: '\\\\foo')
 
-      assert_not binary.changed?
+      assert_not_predicate binary, :changed?
 
       binary.data = binary.data.dup
 
-      assert_not binary.changed?
+      assert_not_predicate binary, :changed?
 
       binary = klass.last
 
-      assert_not binary.changed?
+      assert_not_predicate binary, :changed?
 
       binary.data << 'bar'
 
-      assert binary.changed?
+      assert_predicate binary, :changed?
+    end
+
+    example 'changes is correct for subclass' do
+      foo = Class.new(Pirate) do
+        def catchphrase
+          super.upcase
+        end
+      end
+
+      pirate = foo.create!(catchphrase: 'arrrr')
+
+      new_catchphrase = 'arrrr matey!'
+
+      pirate.catchphrase = new_catchphrase
+      assert_predicate pirate, :catchphrase_changed?
+
+      expected_changes = {
+        'catchphrase' => ['arrrr', new_catchphrase]
+      }
+
+      assert_equal new_catchphrase.upcase, pirate.catchphrase
+      assert_equal expected_changes, pirate.changes
+    end
+
+    example 'changes is correct if override attribute reader' do
+      pirate = Pirate.create!(catchphrase: 'arrrr')
+      def pirate.catchphrase
+        super.upcase
+      end
+
+      new_catchphrase = 'arrrr matey!'
+
+      pirate.catchphrase = new_catchphrase
+      assert_predicate pirate, :catchphrase_changed?
+
+      expected_changes = {
+        'catchphrase' => ['arrrr', new_catchphrase]
+      }
+
+      assert_equal new_catchphrase.upcase, pirate.catchphrase
+      assert_equal expected_changes, pirate.changes
     end
 
     example "attribute_changed? doesn't compute in-place changes for unrelated attributes" do
@@ -695,7 +745,7 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       end
 
       model = klass.new(first_name: 'Jim')
-      assert model.first_name_changed?
+      assert_predicate model, :first_name_changed?
     end
 
     example "attribute_will_change! doesn't try to save non-persistable attributes" do
@@ -707,8 +757,30 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       record = klass.new(first_name: 'Sean')
       record.non_persisted_attribute_will_change!
 
-      assert record.non_persisted_attribute_changed?
+      assert_predicate record, :non_persisted_attribute_changed?
       assert record.save
+    end
+
+    example 'virtual attributes are not written with partial_writes off' do
+      original_partial_writes = ActiveRecord::Base.partial_writes
+      begin
+        ActiveRecord::Base.partial_writes = false
+        klass = Class.new(ActiveRecord::Base) do
+          self.table_name = 'people'
+          attribute :non_persisted_attribute, :string
+        end
+
+        record = klass.new(first_name: 'Sean')
+        record.non_persisted_attribute_will_change!
+
+        assert record.save
+
+        record.non_persisted_attribute_will_change!
+
+        assert record.save
+      ensure
+        ActiveRecord::Base.partial_writes = original_partial_writes
+      end
     end
 
     example "mutating and then assigning doesn't remove the change" do
@@ -737,26 +809,33 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
 
     example 'attributes assigned but not selected are dirty' do
       person = Person.select(:id).first
-      refute person.changed?
+      assert_not_predicate person, :changed?
 
       person.first_name = 'Sean'
-      assert person.changed?
+      assert_predicate person, :changed?
 
       person.first_name = nil
-      assert person.changed?
+      assert_predicate person, :changed?
+    end
+
+    example 'attributes not selected are still missing after save' do
+      person = Person.select(:id).first
+      assert_raises(ActiveModel::MissingAttributeError) { person.first_name }
+      assert person.save # calls forget_attribute_assignments
+      assert_raises(ActiveModel::MissingAttributeError) { person.first_name }
     end
 
     example 'saved_change_to_attribute? returns whether a change occurred in the last save' do
       person = Person.create!(first_name: 'Sean')
 
-      assert person.saved_change_to_first_name?
-      refute person.saved_change_to_gender?
+      assert_predicate person, :saved_change_to_first_name?
+      assert_not_predicate person, :saved_change_to_gender?
       assert person.saved_change_to_first_name?(from: nil, to: 'Sean')
       assert person.saved_change_to_first_name?(from: nil)
       assert person.saved_change_to_first_name?(to: 'Sean')
-      refute person.saved_change_to_first_name?(from: 'Jim', to: 'Sean')
-      refute person.saved_change_to_first_name?(from: 'Jim')
-      refute person.saved_change_to_first_name?(to: 'Jim')
+      assert_not person.saved_change_to_first_name?(from: 'Jim', to: 'Sean')
+      assert_not person.saved_change_to_first_name?(from: 'Jim')
+      assert_not person.saved_change_to_first_name?(to: 'Jim')
     end
 
     example 'saved_change_to_attribute returns the change that occurred in the last save' do
@@ -791,11 +870,11 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
     example 'saved_changes? returns whether the last call to save changed anything' do
       person = Person.create!(first_name: 'Sean')
 
-      assert person.saved_changes?
+      assert_predicate person, :saved_changes?
 
       person.save
 
-      refute person.saved_changes?
+      assert_not_predicate person, :saved_changes?
     end
 
     example 'saved_changes returns a hash of all the changes that occurred' do
@@ -813,23 +892,22 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
       assert_equal %w[first_name lock_version updated_at].sort, person.saved_changes.keys.sort
     end
 
-    example 'changed? in after callbacks returns true but is deprecated' do
+    example 'changed? in after callbacks returns false' do
       klass = Class.new(ActiveRecord::Base) do
         self.table_name = 'people'
 
         after_save do
-          ActiveSupport::Deprecation.silence do
-            raise 'changed? should be true' unless changed?
-          end
+          raise 'changed? should be false' if changed?
           raise 'has_changes_to_save? should be false' if has_changes_to_save?
+          raise 'saved_changes? should be true' unless saved_changes?
         end
       end
 
       person = klass.create!(first_name: 'Sean')
-      refute person.changed?
+      assert_not_predicate person, :changed?
     end
 
-    private
+  private
 
     def with_partial_writes(klass, on = true)
       old = klass.partial_writes?
@@ -840,8 +918,8 @@ RSpec.describe 'ActiveRecord::Version51Stable' do
     end
 
     def check_pirate_after_save_failure(pirate)
-      assert pirate.changed?
-      assert pirate.parrot_id_changed?
+      assert_predicate pirate, :changed?
+      assert_predicate pirate, :parrot_id_changed?
       assert_equal %w[parrot_id], pirate.changed
       assert_nil pirate.parrot_id_was
     end

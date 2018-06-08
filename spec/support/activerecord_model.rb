@@ -122,6 +122,12 @@ RSpec.shared_context 'with activerecord model' do
       encrypted_attribute(:updated_on, :datetime)
 
       alias_attribute :title, :name
+
+      if ActiveRecord.gem_version >= Gem::Version.create('5.2.0')
+        attribute :cancel_save_from_callback
+      else
+        attr_accessor :cancel_save_from_callback
+      end
     end
 
     table do |t|
