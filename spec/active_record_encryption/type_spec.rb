@@ -1,6 +1,45 @@
 # frozen_string_literal: true
 
 RSpec.describe ActiveRecordEncryption::Type do
+  describe '#initialize' do
+    context 'given no arguments' do
+      it 'builds from default options' do
+        instance = described_class.new
+        expect(instance.send(:encryptor)).to be_a(ActiveRecordEncryption::Encryptor::Raw)
+        expect(instance.send(:subtype)).to eq(ActiveRecord::Type::Value.new)
+      end
+    end
+
+    context 'given symbol as subtype' do
+      it 'builds from default options' do
+        instance = described_class.new(subtype: :integer)
+        expect(instance.send(:subtype)).to eq(ActiveRecord::Type.lookup(:integer))
+      end
+    end
+
+    context 'given hash as encryption' do
+      it 'builds from default options' do
+        instance = described_class.new(encryption: { encryptor: :active_support, key: 'key', salt: 'salt' })
+        expect(instance.send(:encryptor)).to be_a(ActiveRecordEncryption::Encryptor::ActiveSupport)
+      end
+    end
+
+    context 'given class as encryption' do
+      it 'builds from default options' do
+        instance = described_class.new(encryption: { encryptor: ActiveRecordEncryption::Encryptor::ActiveSupport, key: 'key', salt: 'salt' })
+        expect(instance.send(:encryptor)).to be_a(ActiveRecordEncryption::Encryptor::ActiveSupport)
+      end
+    end
+
+    context 'given instance of class as encryption' do
+      it 'builds from default options' do
+        encryptor = ActiveRecordEncryption::Encryptor::ActiveSupport.new(key: 'key', salt: 'salt')
+        instance = described_class.new(encryption: { encryptor: encryptor })
+        expect(instance.send(:encryptor)).to eq(encryptor)
+      end
+    end
+  end
+
   describe '#type' do
     subject { instance.type }
     let(:instance) { described_class.new(subtype: :integer) }
