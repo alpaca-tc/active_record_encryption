@@ -6,7 +6,7 @@ RSpec.describe ActiveRecordEncryption::Type do
       it 'builds from default options' do
         instance = described_class.new
         expect(instance.send(:encryptor)).to be_a(ActiveRecordEncryption::Encryptor::Raw)
-        expect(instance.send(:subtype)).to eq(ActiveRecord::Type.default_value)
+        expect(instance.send(:subtype)).to eq(ActiveRecord::Type::Value.new)
       end
     end
 
