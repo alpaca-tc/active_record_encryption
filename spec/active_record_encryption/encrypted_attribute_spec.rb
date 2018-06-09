@@ -13,7 +13,9 @@ RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
         end
       end
 
-      allow(ActiveRecordEncryption::Encryptor).to receive(:lookup).and_return(mock_encryptor.new)
+      allow(ActiveRecordEncryption).to receive(:default_encryption).and_return(
+        encryptor: mock_encryptor
+      )
     end
 
     describe 'encryption' do
@@ -104,6 +106,18 @@ RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
         it_behaves_like 'a encrypted column', column: :string, value: 'あ', expected: 'あ'
         it_behaves_like 'a encrypted column', column: :string, value: 'ミョウジ', expected: 'ミョウジ'
         it_behaves_like 'a encrypted column', column: :string, value: '🍺', expected: '🍺'
+
+        it 'supports serialize' do
+          klass = Class.new(Post) do
+            serialize(:string)
+          end
+
+          instance = klass.new(string: [1, 2, 3])
+          expect(instance.string).to eq([1, 2, 3])
+          instance.save!
+          expect(instance.string).to eq([1, 2, 3])
+          expect(instance.string_before_type_cast).to eq("---\n- 1\n- 2\n- 3\nmock")
+        end
       end
 
       describe 'datetime' do
@@ -127,6 +141,36 @@ RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
         it_behaves_like 'a encrypted column', column: :integer, value: -1, expected: -1.0
         it_behaves_like 'a encrypted column', column: :integer, value: '1.33', expected: 1
         it_behaves_like 'a encrypted column', column: :integer, value: nil, expected: nil
+
+        # If you want to encrypt enum column, apply the following monkey patch.
+        # Module.new do
+        #   def serialize(value)
+        #     serialized = subtype.serialize(value)
+        #     mapping.fetch(serialized, serialized)
+        #   end
+        #
+        #   ActiveRecord::Enum::EnumType.prepend(self)
+        # end
+        pending 'supports enum' do
+          klass = Class.new(Post) do
+            enum integer: %w[positive negative]
+          end
+
+          instance = klass.new
+
+          instance.integer = 'positive'
+          expect(instance.integer).to eq('positive')
+          expect(instance.negative?).to be false
+          expect(instance.positive?).to be true
+
+          instance.integer = 'negative'
+          expect(instance.integer).to eq('negative')
+          expect(instance.negative?).to be true
+          expect(instance.positive?).to be false
+
+          instance.save!
+          expect(instance.integer).to eq('negative')
+        end
       end
 
       describe 'float' do
