@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard-rubocop'
+  spec.add_development_dependency 'minitest'
   spec.add_development_dependency 'mysql2', '< 0.5.0'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'rake'

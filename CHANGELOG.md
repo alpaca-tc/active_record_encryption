@@ -15,6 +15,11 @@
   - AES-256-CBC
     - `encrypted_attribute(:field, :type, encryption: { encryptor: :aes_256_cbc, key: ENV['KEY'] })`
 
+### Bug fixes
+
+- `ActiveRecordEncryption::Type#change_in_place?` Compare old value with new value.
+- `ActiveRecordEncryption::Type#cast` supports TimeWithZone
+
 ### Changes
 
 - Remove `ActiveRecordEncryption.with_cipher`
