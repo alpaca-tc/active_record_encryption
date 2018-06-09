@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'active_record'
-require 'active_support/core_ext/module/attribute_accessors_per_thread'
 
 module ActiveRecordEncryption
   require 'active_record_encryption/version'
