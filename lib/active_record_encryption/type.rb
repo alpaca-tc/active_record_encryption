@@ -7,15 +7,18 @@ module ActiveRecordEncryption
     delegate :type, :cast, to: :subtype
     delegate :user_input_in_time_zone, to: :subtype # for ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
 
-    def initialize(subtype: ActiveRecord::Type.default_value, **options)
+    def initialize(
+      subtype: ActiveRecord::Type.default_value,
+      encryption: ActiveRecordEncryption.default_encryption.clone,
+      **options
+    )
+
       # Lookup encryptor from options[:encryption]
-      encryption_options = options.delete(:encryption) || ActiveRecordEncryption.default_encryption.clone
-      encryptor = encryption_options.delete(:encryptor)
-      @encryptor = ActiveRecordEncryption::Encryptor.lookup(encryptor, **encryption_options)
+      @encryptor = build_encryptor(encryption)
+      @binary = ActiveRecord::Type.lookup(:binary)
 
       subtype = ActiveRecord::Type.lookup(subtype, **options) if subtype.is_a?(Symbol)
       @subtype = subtype
-      @binary = ActiveRecord::Type.lookup(:binary)
     end
 
     def deserialize(value)
@@ -36,5 +39,17 @@ module ActiveRecordEncryption
     private
 
     attr_reader :subtype, :binary, :encryptor
+
+    def build_encryptor(options)
+      encryptor = options.delete(:encryptor)
+
+      if encryptor.is_a?(Symbol)
+        ActiveRecordEncryption::Encryptor.lookup(encryptor, **options)
+      elsif encryptor.is_a?(Class)
+        encryptor.new(options)
+      else
+        encryptor
+      end
+    end
   end
 end
