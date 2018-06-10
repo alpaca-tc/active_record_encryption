@@ -3,8 +3,6 @@
 RSpec.shared_context 'with activerecord model' do
   stub_model('Pirate') do
     model do
-      include(ActiveRecordEncryption::EncryptedAttribute)
-
       encrypted_attribute(:catchphrase, :string)
       encrypted_attribute(:parrot_id, :integer)
       encrypted_attribute(:non_validated_parrot_id, :integer)
@@ -23,8 +21,6 @@ RSpec.shared_context 'with activerecord model' do
 
   stub_model('Person') do
     model do
-      include(ActiveRecordEncryption::EncryptedAttribute)
-
       encrypted_attribute(:first_name, :string)
       encrypted_attribute(:gender, :string)
       encrypted_attribute(:comments, :string)
@@ -51,8 +47,6 @@ RSpec.shared_context 'with activerecord model' do
 
   stub_model('Topic') do
     model do
-      include(ActiveRecordEncryption::EncryptedAttribute)
-
       encrypted_attribute(:title, :string, limit: 250)
       encrypted_attribute(:author_name, :string)
       encrypted_attribute(:author_email_address, :string)
@@ -95,8 +89,6 @@ RSpec.shared_context 'with activerecord model' do
 
   stub_model('Aircraft') do
     model do
-      include(ActiveRecordEncryption::EncryptedAttribute)
-
       encrypted_attribute(:name, :string)
       encrypted_attribute(:wheels_count, :integer, default: 0)
     end
@@ -109,8 +101,6 @@ RSpec.shared_context 'with activerecord model' do
 
   stub_model('Parrot') do
     model do
-      include(ActiveRecordEncryption::EncryptedAttribute)
-
       encrypted_attribute(:name, :string)
       encrypted_attribute(:color, :string)
       encrypted_attribute(:parrot_sti_class, :string)
@@ -145,8 +135,6 @@ RSpec.shared_context 'with activerecord model' do
 
   stub_model('NumericData') do
     model do
-      include(ActiveRecordEncryption::EncryptedAttribute)
-
       encrypted_attribute(:bank_balance, :decimal, precision: 10, scale: 2)
       encrypted_attribute(:big_bank_balance, :decimal, precision: 15, scale: 2)
       encrypted_attribute(:world_population, :decimal, precision: 20, scale: 0)
@@ -169,8 +157,6 @@ RSpec.shared_context 'with activerecord model' do
 
   stub_model('Binary') do
     model do
-      include(ActiveRecordEncryption::EncryptedAttribute)
-
       encrypted_attribute(:name, :string)
       encrypted_attribute(:data, :binary)
       encrypted_attribute(:short_data, :binary, limit: 2048)

@@ -18,5 +18,9 @@ ActiveSupport.on_load(:active_record) do
   require 'active_record_encryption/binary'
   require 'active_record_encryption/quoter'
 
+  # Register `:encryption` type
   ActiveRecord::Type.register(:encryption, ActiveRecordEncryption::Type)
+
+  # Define `.encrypted_attribute`
+  ActiveRecord::Base.include(ActiveRecordEncryption::EncryptedAttribute)
 end
