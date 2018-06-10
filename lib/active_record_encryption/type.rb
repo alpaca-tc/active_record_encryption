@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_record_encryption/serializer_with_cast'
+
 module ActiveRecordEncryption
   class Type < ActiveRecord::Type::Value
     using(ActiveRecordEncryption::SerializerWithCast)
