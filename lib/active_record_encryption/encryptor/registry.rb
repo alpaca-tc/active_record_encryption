@@ -7,9 +7,9 @@ module ActiveRecordEncryption
         @registrations = []
       end
 
-      def register(type_name, klass = nil, **options, &block)
+      def register(encryptor_name, klass = nil, **options, &block)
         block ||= proc { |_, *args| klass.new(*args) }
-        registrations << Registration.new(type_name, block, **options)
+        registrations << Registration.new(encryptor_name, block, **options)
       end
 
       def lookup(symbol, *args)
@@ -18,7 +18,7 @@ module ActiveRecordEncryption
         if registration
           registration.call(self, symbol, *args)
         else
-          raise ArgumentError, "Unknown type #{symbol.inspect}"
+          raise ArgumentError, "Unknown encryptor #{symbol.inspect}"
         end
       end
 
@@ -45,8 +45,8 @@ module ActiveRecordEncryption
         end
       end
 
-      def matches?(type_name, *_args, **_kwargs)
-        type_name == name
+      def matches?(encryptor_name, *_args, **_kwargs)
+        encryptor_name == name
       end
 
       private
