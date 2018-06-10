@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
     README.md
     CODE_OF_CONDUCT.md
     LICENSE.txt
-  ]
+  ] + Dir['lib/**/*.rb']
 
   spec.add_dependency 'activerecord', '>= 5.0'
 
