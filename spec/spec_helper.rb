@@ -3,6 +3,7 @@
 require 'bundler/setup'
 require 'pry'
 require 'active_record_encryption'
+require 'minitest'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
@@ -18,4 +19,7 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  # For minitest
+  config.expect_with :minitest
 end

@@ -11,16 +11,19 @@ Gem::Specification.new do |spec|
   spec.authors       = ['alpaca-tc']
   spec.email         = ['alpaca-tc@alpaca.tc']
 
-  spec.summary       = 'Write a short summary, because RubyGems requires one.'
-  spec.description   = 'Write a longer description or delete this line.'
+  spec.summary       = 'Transparent ActiveRecord encryption'
+  spec.description   = 'Provides transparent encryption for ActiveRecord. You can protect your data with any encryption algorithm you want.'
   spec.homepage      = 'https://github.com/alpaca-tc/active_record_encryption'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features)/})
-  end
-
   spec.require_paths = ['lib']
+
+  spec.files = %w[
+    CHANGELOG.md
+    README.md
+    CODE_OF_CONDUCT.md
+    LICENSE.txt
+  ] + Dir['lib/**/*.rb']
 
   spec.add_dependency 'activerecord', '>= 5.0'
 
@@ -28,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard-rubocop'
+  spec.add_development_dependency 'minitest'
   spec.add_development_dependency 'mysql2', '< 0.5.0'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'rake'
