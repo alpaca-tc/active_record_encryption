@@ -21,8 +21,6 @@ RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
     describe 'encryption' do
       stub_model('Post') do
         model do
-          include(ActiveRecordEncryption::EncryptedAttribute)
-
           encrypted_attribute(:string, :string)
           encrypted_attribute(:date, :date)
           encrypted_attribute(:datetime, :datetime)
@@ -197,8 +195,6 @@ RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
     describe 'with default value' do
       stub_model('Post') do
         model do
-          include(ActiveRecordEncryption::EncryptedAttribute)
-
           encrypted_attribute(:simple, :string, default: 'default')
           encrypted_attribute(:proc, :string, default: -> { 'default' })
           encrypted_attribute(:object, :string, default: [])

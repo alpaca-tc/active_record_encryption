@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/notifications'
+
 module WithTimezoneConfig
   def with_timezone_config(cfg)
     old_default_zone = ActiveRecord::Base.default_timezone
