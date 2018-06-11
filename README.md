@@ -62,9 +62,9 @@ There are four supported encryptors: `:active_support`, `:aes_256_cbc`.
   - Example
     - `encrypted_attribute(:field, :type, encryption: { encryptor: :active_support, key: SecureRandom.hex(64), salt: SecureRandom.hex(64) })`
 - `:aes_256_cbc`
-  - Encryption is performed using `OpenSSL::Cipher.new('AES-256-CBC')
+  - Encryption is performed using `OpenSSL::Cipher.new('AES-256-CBC')`
   - Example
-    - `encrypted_attribute(:field, :type, encryption: { encryptor: :active_support, key: SecureRandom.hex(64) })`
+    - `encrypted_attribute(:field, :type, encryption: { encryptor: :aes_256_cbc, key: SecureRandom.hex(64) })`
 
 ## Customize encryptor
 
