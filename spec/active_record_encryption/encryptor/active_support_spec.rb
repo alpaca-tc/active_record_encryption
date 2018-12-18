@@ -12,6 +12,30 @@ RSpec.describe ActiveRecordEncryption::Encryptor::ActiveSupport do
           expect { described_class.new(key: key) }.to raise_error(ArgumentError)
         end
       end
+
+      context 'with cipher' do
+        let(:instance) { described_class.new(salt: salt, key: key, cipher: cipher) }
+
+        def new_cipher
+          instance.instance_variable_get(:@encryptor).send(:new_cipher)
+        end
+
+        context 'cipher is "aes-256-gcm"' do
+          let(:cipher) { 'aes-256-gcm' }
+
+          it 'builds aes-256-gcm encryptor' do
+            expect(new_cipher.name).to eq('id-aes256-GCM')
+          end
+        end
+
+        context 'cipher is "aes-256-cbc"' do
+          let(:cipher) { 'aes-256-cbc' }
+
+          it 'builds aes-256-cbc encryptor' do
+            expect(new_cipher.name).to eq('AES-256-CBC')
+          end
+        end
+      end
     end
 
     describe '#encrypt/decrypt' do
