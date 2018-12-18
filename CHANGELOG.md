@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Fixes #13 Add `:cipher` option to `active_support` encryptor to change cipher.
+
 ## 0.2.0
 
 ### New features
