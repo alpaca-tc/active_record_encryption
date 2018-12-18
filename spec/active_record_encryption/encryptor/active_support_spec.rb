@@ -16,19 +16,15 @@ RSpec.describe ActiveRecordEncryption::Encryptor::ActiveSupport do
       context 'with cipher' do
         let(:instance) { described_class.new(salt: salt, key: key, cipher: cipher) }
 
-        context 'cipher is nil' do
-          let(:cipher) { nil }
-
-          it 'builds encryptor' do
-            expect { instance.encrypt('a') }.to_not raise_error
-          end
+        def new_cipher
+          instance.instance_variable_get(:@encryptor).send(:new_cipher)
         end
 
         context 'cipher is "aes-256-gcm"' do
           let(:cipher) { 'aes-256-gcm' }
 
           it 'builds aes-256-gcm encryptor' do
-            expect(instance.encrypt('a')).to end_with("==") # AES-256-GCM
+            expect(new_cipher.name).to eq('id-aes256-GCM')
           end
         end
 
@@ -36,7 +32,7 @@ RSpec.describe ActiveRecordEncryption::Encryptor::ActiveSupport do
           let(:cipher) { 'aes-256-cbc' }
 
           it 'builds aes-256-cbc encryptor' do
-            expect(instance.encrypt('a')).to match(/=\-\-\w{40}$/)
+            expect(new_cipher.name).to eq('AES-256-CBC')
           end
         end
       end
