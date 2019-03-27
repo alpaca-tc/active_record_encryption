@@ -49,7 +49,7 @@ class PointLog < ActiveRecord::Base
   encrypted_attribute(:serialized_address, :string)
 
   # Change encryptor
-  encrypted_attribute(:name, :field, encryption: { encryptor: :active_support, key: ENV['ENCRYPTION_KEY'], salt: ['ENCRYPTION_SALT'] })
+  encrypted_attribute(:name, :field, encryption: { encryptor: :active_support, key: ENV['ENCRYPTION_KEY'], salt: ENV['ENCRYPTION_SALT'] })
 end
 ```
 
