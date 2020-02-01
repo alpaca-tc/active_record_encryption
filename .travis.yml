@@ -6,7 +6,7 @@ rvm:
   - 2.5.7
   - 2.6.5
   - 2.7.0
-before_install: gem install bundler
+before_install: gem install bundler -v 1.17.0
 gemfile:
   - gemfiles/5.0_stable.gemfile
   - gemfiles/5.1_stable.gemfile
