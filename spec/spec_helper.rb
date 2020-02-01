@@ -3,6 +3,7 @@
 require 'bundler/setup'
 require 'pry'
 require 'active_record_encryption'
+require 'active_record'
 require 'minitest'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
