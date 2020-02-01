@@ -2,6 +2,7 @@
 
 appraise '5.0-stable' do
   gem 'activerecord', '~> 5.0.0'
+  gem 'sqlite3', '~> 1.3.6'
 end
 
 appraise '5.1-stable' do
@@ -9,5 +10,9 @@ appraise '5.1-stable' do
 end
 
 appraise '5.2-stable' do
-  gem 'activerecord', git: 'https://github.com/rails/rails', branch: '5-2-stable'
+  gem 'activerecord', '~> 5.2.0'
+end
+
+appraise '6.0-stable' do
+  gem 'activerecord', '~> 6.0.0'
 end
