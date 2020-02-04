@@ -1,12 +1,15 @@
 sudo: false
 language: ruby
+services:
+  - mysql
 rvm:
-  - 2.3.7
-  - 2.4.4
-  - 2.5.1
-before_install: gem install bundler -v 1.16.1
+  - 2.5.7
+  - 2.6.5
+  - 2.7.0
+before_install: gem install bundler
 gemfile:
   - gemfiles/5.0_stable.gemfile
   - gemfiles/5.1_stable.gemfile
   - gemfiles/5.2_stable.gemfile
+  - gemfiles/6.0_stable.gemfile
 script: bundle exec rspec
