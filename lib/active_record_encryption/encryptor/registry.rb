@@ -8,15 +8,15 @@ module ActiveRecordEncryption
       end
 
       def register(encryptor_name, klass = nil, **options, &block)
-        block ||= proc { |_, *args| klass.new(*args) }
+        block ||= proc { |_, *args, **kwargs| kwargs.any? ? klass.new(*args, **kwargs) : klass.new(*args) }
         registrations << Registration.new(encryptor_name, block, **options)
       end
 
-      def lookup(symbol, *args)
-        registration = find_registration(symbol, *args)
+      def lookup(symbol, *args, **kwargs)
+        registration = find_registration(symbol, *args, **kwargs)
 
         if registration
-          registration.call(self, symbol, *args)
+          kwargs.any? ? registration.call(self, symbol, *args, **kwargs) : registration.call(self, symbol, *args)
         else
           raise ArgumentError, "Unknown encryptor #{symbol.inspect}"
         end
@@ -26,8 +26,8 @@ module ActiveRecordEncryption
 
       attr_reader :registrations
 
-      def find_registration(symbol, *args)
-        registrations.find { |registration| registration.matches?(symbol, *args) }
+      def find_registration(symbol, *args, **kwargs)
+        registrations.find { |registration| registration.matches?(symbol, *args, **kwargs) }
       end
     end
 
