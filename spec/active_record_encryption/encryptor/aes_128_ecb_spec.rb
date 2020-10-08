@@ -51,6 +51,32 @@ RSpec.describe ActiveRecordEncryption::Encryptor::Aes128Ecb do
           expect { instance_2.decrypt(encrypted) }.to raise_error(OpenSSL::Cipher::CipherError)
         end
       end
+
+      context 'when value is nil' do
+        let(:value) { nil }
+        it 'encrypts/decrypts value' do
+          instance = build_instance
+          encrypted = instance.encrypt(value)
+
+          expect(encrypted).to be nil
+
+          decrypted = instance.decrypt(encrypted)
+          expect(decrypted).to eq(value)
+        end
+      end
+
+      context 'when value is blank string' do
+        let(:value) { '' }
+        it 'encrypts/decrypts value' do
+          instance = build_instance
+          encrypted = instance.encrypt(value)
+
+          expect(encrypted).to_not eq(value)
+
+          decrypted = instance.decrypt(encrypted)
+          expect(decrypted).to eq(value)
+        end
+      end
     end
   end
 end

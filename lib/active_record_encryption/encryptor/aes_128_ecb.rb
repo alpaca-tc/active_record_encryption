@@ -11,6 +11,7 @@ module ActiveRecordEncryption
       end
 
       def encrypt(value)
+        return nil if value.nil?
         string = super.dup.force_encoding(encoding)
         encrypted_data = _encrypt(string, key)
 
@@ -20,6 +21,7 @@ module ActiveRecordEncryption
       end
 
       def decrypt(value)
+        return nil if value.nil?
         binary         = Binary.new(value)
         encrypted_data = binary.read
 
