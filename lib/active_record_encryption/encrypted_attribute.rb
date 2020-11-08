@@ -6,7 +6,7 @@ module ActiveRecordEncryption
 
     module ClassMethods
       def encrypted_attribute(name, subtype, **options)
-        attribute(name, :encryption, options.merge(subtype: subtype))
+        attribute(name, :encryption, **options, subtype: subtype)
       end
     end
   end

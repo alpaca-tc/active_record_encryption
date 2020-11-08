@@ -57,7 +57,7 @@ module ActiveRecordEncryption
       if encryptor.is_a?(Symbol)
         ActiveRecordEncryption::Encryptor.lookup(encryptor, **options)
       elsif encryptor.is_a?(Class)
-        encryptor.new(options)
+        encryptor.new(**options)
       else
         encryptor
       end
