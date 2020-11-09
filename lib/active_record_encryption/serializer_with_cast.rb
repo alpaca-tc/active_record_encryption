@@ -15,15 +15,19 @@ module ActiveRecordEncryption
     #   User.attribute(:id, :boolean)
     #   User.where(id: 'string').to_sql #=> SELECT `users`.* FROM `users` WHERE `users`.`id` = TRUE
     #   User.where(id: true).to_sql     #=> SELECT `users`.* FROM `users` WHERE `users`.`id` = TRUE
-    refine ActiveModel::Type::Decimal do
-      def serialize(value)
-        cast(value)
+    if ActiveRecord.gem_version < Gem::Version.create('6.0')
+      # https://github.com/rails/rails/commit/a741208f80dd33420a56486bd9ed2b0b9862234a
+      refine ActiveModel::Type::Decimal do
+        def serialize(value)
+          cast(value)
+        end
       end
-    end
 
-    refine ActiveModel::Type::Boolean do
-      def serialize(value)
-        cast(value)
+      # https://github.com/rails/rails/commit/34cc301f03aea2e579d6687a9ea9782afc1089a0
+      refine ActiveModel::Type::Boolean do
+        def serialize(value)
+          cast(value)
+        end
       end
     end
 
