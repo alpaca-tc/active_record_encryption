@@ -4,7 +4,7 @@ module ActiveRecordEncryption
   module Encryptor
     # Abstract interface of encryptor
     class Base
-      def initialize(*); end
+      def initialize(*, **); end
 
       def encrypt(value)
         value
