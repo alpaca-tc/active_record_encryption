@@ -12,4 +12,5 @@ gemfile:
   - gemfiles/5.1_stable.gemfile
   - gemfiles/5.2_stable.gemfile
   - gemfiles/6.0_stable.gemfile
+  - gemfiles/6.1_stable.gemfile
 script: bundle exec rspec
