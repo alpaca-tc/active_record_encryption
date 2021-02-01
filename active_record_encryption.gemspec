@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord', '>= 5.0'
 
   spec.add_development_dependency 'appraisal'
-  spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard-rubocop'
   spec.add_development_dependency 'minitest'
