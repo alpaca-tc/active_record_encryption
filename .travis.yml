@@ -3,9 +3,10 @@ language: ruby
 services:
   - mysql
 rvm:
-  - 2.5.7
-  - 2.6.5
-  - 2.7.0
+  - 2.5.8
+  - 2.6.6
+  - 2.7.2
+  - 3.0.0
 before_install: gem install bundler
 gemfile:
   - gemfiles/5.0_stable.gemfile
@@ -13,4 +14,17 @@ gemfile:
   - gemfiles/5.2_stable.gemfile
   - gemfiles/6.0_stable.gemfile
   - gemfiles/6.1_stable.gemfile
+matrix:
+  exclude:
+    - rvm: 3.0.0
+      gemfile: gemfiles/5.0_stable.gemfile
+    - rvm: 3.0.0
+      gemfile: gemfiles/5.1_stable.gemfile
+    - rvm: 3.0.0
+      gemfile: gemfiles/5.2_stable.gemfile
+    - rvm: 3.0.0
+      gemfile: gemfiles/6.0_stable.gemfile
+script:
+  - bundle exec rspec
+  - bundle exec rubocop
 script: bundle exec rspec
