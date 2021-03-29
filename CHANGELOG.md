@@ -1,3 +1,9 @@
+## 0.3.0
+
+- Support rails 6.1.0 #22
+- Ensure casting only when Rails less than 6.0 #21
+- Fix Ruby 2.7 keyword arguments warnings #20
+
 ## 0.2.1
 
 - Fixes #13 Add `:cipher` option to `active_support` encryptor to change cipher.
