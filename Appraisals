@@ -2,7 +2,7 @@
 
 appraise '5.0-stable' do
   gem 'activerecord', '~> 5.0.0'
-  gem 'sqlite3', '~> 1.3.6'
+  gem 'sqlite3', '~> 1.3.0'
 end
 
 appraise '5.1-stable' do
