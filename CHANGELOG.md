@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Support rails 7.0.0 #25
+
 ## 0.3.0
 
 - Support rails 6.1.0 #22
