@@ -9,9 +9,11 @@ module ActiveRecordStubModel
     def stub_model(model_name, *options, &block)
       model = StubModel.new(model_name, *options, &block)
 
-      around do |example|
+      before do
         model.build
-        example.run
+      end
+
+      after do
         model.destroy
       end
     end
