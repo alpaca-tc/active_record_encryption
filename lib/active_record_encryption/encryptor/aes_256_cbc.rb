@@ -6,6 +6,7 @@ module ActiveRecordEncryption
   module Encryptor
     class ActiveRecordEncryption::Encryptor::Aes256Cbc < Raw
       def initialize(key:, encoding: Encoding::UTF_8)
+        super()
         @key = key
         @encoding = encoding
       end

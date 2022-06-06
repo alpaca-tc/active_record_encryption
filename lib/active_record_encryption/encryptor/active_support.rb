@@ -4,6 +4,7 @@ module ActiveRecordEncryption
   module Encryptor
     class ActiveSupport < Raw
       def initialize(key:, salt:, cipher: nil)
+        super()
         key_generator = ::ActiveSupport::KeyGenerator.new(key)
         @encryptor = ::ActiveSupport::MessageEncryptor.new(key_generator.generate_key(salt, 32), cipher: cipher)
       end

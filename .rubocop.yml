@@ -9,9 +9,6 @@ AllCops:
   TargetRubyVersion: 2.5
   DisplayCopNames: true
 
-Performance:
-  Enabled: false
-
 Bundler:
   Enabled: false
 
@@ -24,7 +21,7 @@ Metrics/BlockNesting:
 Metrics/ClassLength:
   Enabled: false
 
-Metrics/LineLength:
+Style/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
@@ -38,10 +35,6 @@ Metrics/ModuleLength:
 
 Style/AsciiComments:
   Enabled: false
-
-Style/BlockDelimiters:
-  Exclude:
-    - 'spec/**/*'
 
 Style/Documentation:
   Enabled: false
@@ -67,7 +60,7 @@ Style/NumericPredicate:
 Style/Lambda:
   Enabled: false
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
 Layout/MultilineMethodCallIndentation:

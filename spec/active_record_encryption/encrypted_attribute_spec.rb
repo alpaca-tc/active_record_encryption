@@ -5,7 +5,7 @@ RSpec.describe ActiveRecordEncryption::EncryptedAttribute do
     before do
       mock_encryptor = Class.new(ActiveRecordEncryption::Encryptor::Raw) do
         def encrypt(value)
-          super + 'mock'
+          "#{super}mock"
         end
 
         def decrypt(value)

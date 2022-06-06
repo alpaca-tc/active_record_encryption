@@ -23,6 +23,7 @@ module ActiveRecordEncryption
     # Cast value to string
     def _type_cast(value)
       return value.to_s if value.is_a?(Numeric)
+
       super(value)
     end
   end

@@ -14,6 +14,7 @@ module ActiveRecordEncryption
       encryption: ActiveRecordEncryption.default_encryption.clone,
       **options
     )
+      super(**options.slice(:precision, :limit, :scale))
 
       # Lookup encryptor from options[:encryption]
       @encryptor = build_encryptor(encryption)
@@ -54,9 +55,10 @@ module ActiveRecordEncryption
     def build_encryptor(options)
       encryptor = options.delete(:encryptor)
 
-      if encryptor.is_a?(Symbol)
+      case encryptor
+      when Symbol
         ActiveRecordEncryption::Encryptor.lookup(encryptor, **options)
-      elsif encryptor.is_a?(Class)
+      when Class
         encryptor.new(**options)
       else
         encryptor

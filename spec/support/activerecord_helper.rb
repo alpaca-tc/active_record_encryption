@@ -3,15 +3,14 @@
 require 'active_support/notifications'
 
 module WithTimezoneConfig
+  # rubocop:disable Metrics/AbcSize
   def with_timezone_config(cfg)
     old_default_zone = ActiveRecord::Base.default_timezone
     old_awareness = ActiveRecord::Base.time_zone_aware_attributes
     old_zone = Time.zone
 
     ActiveRecord::Base.default_timezone = cfg[:default] if cfg.key?(:default)
-    if cfg.key?(:aware_attributes)
-      ActiveRecord::Base.time_zone_aware_attributes = cfg[:aware_attributes]
-    end
+    ActiveRecord::Base.time_zone_aware_attributes = cfg[:aware_attributes] if cfg.key?(:aware_attributes)
     Time.zone = cfg[:zone] if cfg.key?(:zone)
     yield
   ensure
@@ -19,6 +18,7 @@ module WithTimezoneConfig
     ActiveRecord::Base.time_zone_aware_attributes = old_awareness
     Time.zone = old_zone
   end
+  # rubocop:enable Metrics/AbcSize
 end
 
 module ActiveRecordAssertion
@@ -46,8 +46,8 @@ module ActiveRecordAssertion
     SQLCounter.log_all.dup
   end
 
-  def assert_sql(*patterns_to_match)
-    capture_sql { yield }
+  def assert_sql(*patterns_to_match, &block)
+    capture_sql(&block)
   ensure
     failed_patterns = []
     patterns_to_match.each do |pattern|
@@ -92,6 +92,7 @@ end
 class SQLCounter
   class << self
     attr_accessor :ignored_sql, :log, :log_all
+
     def clear_log
       self.log = []
       self.log_all = []

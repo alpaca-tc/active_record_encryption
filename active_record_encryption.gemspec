@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
   spec.license       = 'MIT'
 
   spec.require_paths = ['lib']
+  spec.required_ruby_version = '>= 2.5.0'
 
   spec.files = %w[
     CHANGELOG.md
@@ -25,15 +26,4 @@ Gem::Specification.new do |spec|
   ] + Dir['lib/**/*.rb']
 
   spec.add_dependency 'activerecord', '>= 5.0'
-
-  spec.add_development_dependency 'appraisal'
-  spec.add_development_dependency 'guard-rspec'
-  spec.add_development_dependency 'guard-rubocop'
-  spec.add_development_dependency 'minitest'
-  spec.add_development_dependency 'mysql2'
-  spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'sqlite3'
 end
