@@ -118,9 +118,8 @@ end
 
 ```bash
 bundle exec appraisal install
-bundle exec appraisal 5.0-stable rspec
-bundle exec appraisal 5.1-stable rspec
-bundle exec appraisal 5.2-stable rspec
+bundle exec appraisal 6.1-stable rspec
+bundle exec appraisal 7.0-stable rspec
 ```
 
 ## Contributing
