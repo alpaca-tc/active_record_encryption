@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
   spec.license       = 'MIT'
 
   spec.require_paths = ['lib']
+  spec.required_ruby_version = '>= 3.0.0'
 
   spec.files = %w[
     CHANGELOG.md
@@ -24,7 +25,7 @@ Gem::Specification.new do |spec|
     LICENSE.txt
   ] + Dir['lib/**/*.rb']
 
-  spec.add_dependency 'activerecord', '>= 5.0'
+  spec.add_dependency 'activerecord', '>= 6.1'
 
   spec.add_development_dependency 'appraisal'
   spec.add_development_dependency 'guard-rspec'

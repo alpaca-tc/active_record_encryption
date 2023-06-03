@@ -1,5 +1,8 @@
-## 0.3.1
+## Unreleased
 
+- EOL Ruby and Rails no longer supported #29
+  - Requires Ruby 3.0.0 or newer.
+  - Requires Rails 6.1.0 or newer.
 - Support rails 7.0.0 #25
 
 ## 0.3.0
