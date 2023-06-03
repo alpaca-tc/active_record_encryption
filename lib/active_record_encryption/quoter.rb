@@ -18,12 +18,22 @@ module ActiveRecordEncryption
       'f'
     end
 
+    if ActiveRecord::VERSION::MAJOR >= 7
+      # Cast value to string
+      def type_cast(value)
+        return value.to_s if value.is_a?(Numeric)
+        super(value)
+      end
+    end
+
     private
 
-    # Cast value to string
-    def _type_cast(value)
-      return value.to_s if value.is_a?(Numeric)
-      super(value)
+    if ActiveRecord::VERSION::MAJOR < 7
+      # Cast value to string
+      def _type_cast(value)
+        return value.to_s if value.is_a?(Numeric)
+        super(value)
+      end
     end
   end
 end
