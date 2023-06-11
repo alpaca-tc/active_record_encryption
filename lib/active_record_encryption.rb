@@ -13,6 +13,7 @@ end
 
 ActiveSupport.on_load(:active_record) do
   require 'active_record_encryption/type'
+  require 'active_record_encryption/type/binary'
   require 'active_record_encryption/encryptor'
   require 'active_record_encryption/encrypted_attribute'
   require 'active_record_encryption/binary'
@@ -20,6 +21,7 @@ ActiveSupport.on_load(:active_record) do
 
   # Register `:encryption` type
   ActiveRecord::Type.register(:encryption, ActiveRecordEncryption::Type)
+  ActiveRecord::Type.register(:encryption_binary, ActiveRecordEncryption::Type::Binary)
 
   # Define `.encrypted_attribute`
   ActiveRecord::Base.include(ActiveRecordEncryption::EncryptedAttribute)

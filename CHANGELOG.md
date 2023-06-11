@@ -4,6 +4,8 @@
   - Requires Ruby 3.0.0 or newer.
   - Requires Rails 6.1.0 or newer.
 - Support rails 7.0.0 #25
+- Migrate CI from travis.ci to GitHub Action. #27
+  - In Rails 7.0, `ActiveRecordEncryption` do not change encoding for backward compatibility.
 
 ## 0.3.0
 
