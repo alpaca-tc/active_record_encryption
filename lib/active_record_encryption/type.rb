@@ -10,10 +10,9 @@ module ActiveRecordEncryption
       encryption: ActiveRecordEncryption.default_encryption.clone,
       **options
     )
-
       # Lookup encryptor from options[:encryption]
       @encryptor = build_encryptor(encryption)
-      @binary = ActiveRecord::Type.lookup(:binary)
+      @binary = ActiveRecord::Type.lookup(:encryption_binary)
 
       subtype = ActiveRecord::Type.lookup(subtype, **options) if subtype.is_a?(Symbol)
       @subtype = subtype
