@@ -113,11 +113,7 @@ RSpec.shared_context 'with activerecord model' do
 
       alias_attribute :title, :name
 
-      if ActiveRecord.gem_version >= Gem::Version.create('5.2.0')
-        attribute :cancel_save_from_callback
-      else
-        attr_accessor :cancel_save_from_callback
-      end
+      attribute :cancel_save_from_callback
     end
 
     table do |t|
