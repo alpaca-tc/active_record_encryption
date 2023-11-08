@@ -4,6 +4,14 @@ RSpec.describe ActiveRecordEncryption::Quoter do
   describe '#type_cast' do
     subject { described_class.instance.type_cast(value) }
 
+    def to_s(value, *args)
+      if ActiveRecord::VERSION::MAJOR >= 7
+        value.to_fs(*args)
+      else
+        value.to_s(*args)
+      end
+    end
+
     context 'given string' do
       let(:value) { 'hello world' }
       it { is_expected.to eq(value) }
@@ -31,17 +39,17 @@ RSpec.describe ActiveRecordEncryption::Quoter do
 
     context 'given ActiveRecord::Type::Time::Value' do
       let(:value) { ActiveRecord::Type.lookup(:time).serialize(Time.now).change(usec: 0) }
-      it { is_expected.to eq(value.to_s(:db)) }
+      it { is_expected.to eq(to_s(value, :db)) }
     end
 
     context 'given Date' do
       let(:value) { Date.today }
-      it { is_expected.to eq value.to_s(:db) }
+      it { is_expected.to eq to_s(value, :db) }
     end
 
     context 'given Time' do
       let(:value) { Time.now.change(usec: 0) }
-      it { is_expected.to eq value.utc.to_s(:db) }
+      it { is_expected.to eq to_s(value.utc, :db) }
     end
 
     context 'given Integer' do

@@ -26,6 +26,11 @@ module ActiveRecordEncryption
       end
     end
 
+    # @return [Symbol]
+    def default_timezone
+      ActiveRecord::Base.connection.default_timezone
+    end
+
     private
 
     if ActiveRecord::VERSION::MAJOR < 7
