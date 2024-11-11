@@ -1,8 +1,10 @@
+## Unreleased
+
+- Drop Rails 6.1 support #36
+
 ## 1.0.0
 
-- EOL Ruby and Rails no longer supported #29
-  - Requires Ruby 3.0.0 or newer.
-  - Requires Rails 6.1.0 or newer.
+- EOL Ruby and Rails no longer supported #29 #30
 - Support rails 7.0.0 #25
 - Support rails 7.1.0 #31
 - Migrate CI from travis.ci to GitHub Action. #27
