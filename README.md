@@ -117,9 +117,9 @@ end
 ### Run spec
 
 ```bash
+docker compose up -d
 bundle exec appraisal install
-bundle exec appraisal 6.1-stable rspec
-bundle exec appraisal 7.0-stable rspec
+bundle exec appraisal rspec
 ```
 
 ## Contributing
