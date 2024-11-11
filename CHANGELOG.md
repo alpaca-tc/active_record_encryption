@@ -1,4 +1,4 @@
-## 1.0.0.alpha
+## 1.0.0
 
 - EOL Ruby and Rails no longer supported #29
   - Requires Ruby 3.0.0 or newer.
