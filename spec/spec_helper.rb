@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'pry'
 require 'active_record_encryption'
 require 'active_record'
 require 'minitest'

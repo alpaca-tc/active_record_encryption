@@ -18,27 +18,15 @@ module ActiveRecordEncryption
       'f'
     end
 
-    if ActiveRecord::VERSION::MAJOR >= 7
-      # Cast value to string
-      def type_cast(value)
-        return value.to_s if value.is_a?(Numeric)
-        super(value)
-      end
+    # Cast value to string
+    def type_cast(value)
+      return value.to_s if value.is_a?(Numeric)
+      super(value)
     end
 
     # @return [Symbol]
     def default_timezone
       ActiveRecord::Base.connection.default_timezone
-    end
-
-    private
-
-    if ActiveRecord::VERSION::MAJOR < 7
-      # Cast value to string
-      def _type_cast(value)
-        return value.to_s if value.is_a?(Numeric)
-        super(value)
-      end
     end
   end
 end

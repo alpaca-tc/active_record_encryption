@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Drop Rails 6.1 support #36
+- Updated the CI environment by removing deprecated dependencies and adding support for Ruby 4.0, Rails 8.1, and MySQL 8.4. #38
 
 ## 1.0.0
 

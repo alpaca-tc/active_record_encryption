@@ -5,11 +5,7 @@ RSpec.describe ActiveRecordEncryption::Quoter do
     subject { described_class.instance.type_cast(value) }
 
     def to_s(value, *args)
-      if ActiveRecord::VERSION::MAJOR >= 7
-        value.to_fs(*args)
-      else
-        value.to_s(*args)
-      end
+      value.to_fs(*args)
     end
 
     context 'given string' do

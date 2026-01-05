@@ -17,7 +17,7 @@ class Mysql2Adapter < ActiveRecord::Base
     adapter: 'mysql2',
     database: ENV.fetch('ACTIVERECORD_ENCRYPTION_DBNAME', 'active_record_encryption'),
     username: ENV.fetch('ACTIVERECORD_ENCRYPTION_USERNAME', 'root'),
-    password: ENV.fetch('ACTIVERECORD_ENCRYPTION_PASSWORD', ''),
+    password: ENV.fetch('ACTIVERECORD_ENCRYPTION_PASSWORD', 'password'),
     host: ENV.fetch('ACTIVERECORD_ENCRYPTION_HOST', '127.0.0.1'),
   }.freeze
 

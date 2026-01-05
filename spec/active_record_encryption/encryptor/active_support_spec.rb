@@ -24,13 +24,7 @@ RSpec.describe ActiveRecordEncryption::Encryptor::ActiveSupport do
           let(:cipher) { 'aes-256-gcm' }
 
           it 'builds aes-256-gcm encryptor' do
-            expected = if RUBY_VERSION >= '3.1.0'
-                         'AES-256-GCM'
-                       else
-                         'id-aes256-GCM'
-                       end
-
-            expect(new_cipher.name).to eq(expected)
+            expect(new_cipher.name).to eq('AES-256-GCM')
           end
         end
 
