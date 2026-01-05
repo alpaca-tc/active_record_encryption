@@ -25,5 +25,5 @@ Gem::Specification.new do |spec|
     LICENSE.txt
   ] + Dir['lib/**/*.rb']
 
-  spec.add_dependency 'activerecord', '>= 7.0'
+  spec.add_dependency 'activerecord', '>= 7.2'
 end
